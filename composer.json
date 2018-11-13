@@ -1,0 +1,36 @@
+{
+  "name": "hamlet-framework/http-message-test",
+  "type": "framework",
+  "description": "Hamlet Framework / HTTP / Message / Test",
+  "keywords": ["framework"],
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Vasily Kartashov",
+      "email": "info@kartashov.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2",
+    "psr/http-message": "@stable"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "@stable",
+    "guzzlehttp/psr7": "@stable",
+    "zendframework/zend-diactoros": "@stable",
+    "slim/slim": "@stable",
+    "ringcentral/psr7": "@stable",
+    "nyholm/psr7": "@stable",
+    "windwalker/http": "@stable"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hamlet\\Http\\Message\\Spec\\Traits\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Hamlet\\Http\\Message\\": "tests"
+    }
+  }
+}
