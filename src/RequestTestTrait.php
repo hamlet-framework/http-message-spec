@@ -55,7 +55,8 @@ trait RequestTestTrait
      */
     public function test_with_request_target_rejects_invalid_request_targets($target)
     {
-        self::request()->withRequestTarget($target);
+        $request = self::request()->withRequestTarget($target);
+        $request->getRequestTarget();
     }
 
     public function test_request_target_preserved_with_falsey_query()
@@ -137,7 +138,8 @@ trait RequestTestTrait
      */
     public function test_with_method_rejects_invalid_method_names($method)
     {
-        self::request()->withMethod($method);
+        $request = self::request()->withMethod($method);
+        $request->getMethod();
     }
 
     public function test_get_host_headers_gets_host_from_uri()
