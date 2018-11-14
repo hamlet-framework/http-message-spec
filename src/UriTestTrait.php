@@ -303,7 +303,8 @@ trait UriTestTrait
      */
     public function test_with_scheme_rejects_invalid_values($scheme)
     {
-        self::uri()->withScheme($scheme);
+        $uri = self::uri()->withScheme($scheme);
+        $uri->getScheme();
     }
 
     /**
@@ -314,7 +315,8 @@ trait UriTestTrait
      */
     public function test_with_user_info_rejects_invalid_values($user, $password)
     {
-        self::uri()->withUserInfo($user, $password);
+        $uri = self::uri()->withUserInfo($user, $password);
+        $uri->getUserInfo();
     }
 
     /**
@@ -324,7 +326,8 @@ trait UriTestTrait
      */
     public function test_with_host_rejects_invalid_values($host)
     {
-        self::uri()->withHost($host);
+        $uri = self::uri()->withHost($host);
+        $uri->getHost();
     }
 
     /**
@@ -334,7 +337,8 @@ trait UriTestTrait
      */
     public function test_with_port_rejects_invalid_values($port)
     {
-        self::uri()->withPort($port);
+        $uri = self::uri()->withPort($port);
+        $uri->getPort();
     }
 
     /**
@@ -344,7 +348,8 @@ trait UriTestTrait
      */
     public function test_with_path_rejects_invalid_values($path)
     {
-        self::uri()->withPath($path);
+        $uri = self::uri()->withPath($path);
+        $uri->getPath();
     }
 
     /**
@@ -354,7 +359,8 @@ trait UriTestTrait
      */
     public function test_with_query_rejects_invalid_values($query)
     {
-        self::uri()->withQuery($query);
+        $uri = self::uri()->withQuery($query);
+        $uri->getQuery();
     }
 
     /**
@@ -364,6 +370,7 @@ trait UriTestTrait
      */
     public function test_with_fragment_rejects_invalid_values($fragment)
     {
-        self::uri()->withFragment($fragment);
+        $uri = self::uri()->withFragment($fragment);
+        $uri->getFragment();
     }
 }
