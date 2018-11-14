@@ -75,7 +75,8 @@ trait MessageTestTrait
     public function test_invalid_header_name_raises_exception($name)
     {
         $value = base64_encode(random_bytes(12));
-        $this->message()->withAddedHeader($name, $value);
+        $message = $this->message()->withAddedHeader($name, $value);
+        $message->getHeaders();
     }
 
     /**
@@ -87,7 +88,8 @@ trait MessageTestTrait
     public function test_invalid_added_header_name_raises_exception($name)
     {
         $value = base64_encode(random_bytes(12));
-        $this->message()->withAddedHeader($name, $value);
+        $message = $this->message()->withAddedHeader($name, $value);
+        $message->getHeaders();
     }
 
     /**
@@ -117,7 +119,8 @@ trait MessageTestTrait
      */
     public function test_with_header_rejects_invalid_values($value)
     {
-        $this->message()->withHeader('header', $value);
+        $message = $this->message()->withHeader('header', $value);
+        $message->getHeaders();
     }
 
     /**
@@ -127,7 +130,8 @@ trait MessageTestTrait
      */
     public function test_with_added_header_rejects_invalid_values($value)
     {
-        $this->message()->withAddedHeader('header', $value);
+        $message = $this->message()->withAddedHeader('header', $value);
+        $message->getHeaders();
     }
 
     public function test_with_added_header_aggregates_headers_without_removing_duplicates()
@@ -220,7 +224,8 @@ trait MessageTestTrait
      */
     public function test_with_header_rejects_multiple_host_values()
     {
-        $this->message()->withHeader('Host', ['a.com', 'b.com']);
+        $message = $this->message()->withHeader('Host', ['a.com', 'b.com']);
+        $message->getHeaders();
     }
 
     /**
@@ -228,7 +233,8 @@ trait MessageTestTrait
      */
     public function test_with_added_header_rejects_multiple_host_values()
     {
-        $this->message()->withAddedHeader('Host', ['a.com', 'b.com']);
+        $message = $this->message()->withAddedHeader('Host', ['a.com', 'b.com']);
+        $message->getHeaders();
     }
 
     public function test_without_header_removes_header()
