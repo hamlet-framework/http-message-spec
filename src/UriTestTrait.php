@@ -58,6 +58,16 @@ trait UriTestTrait
         Assert::assertSame($input, (string) $uri);
     }
 
+    /**
+     * @dataProvider valid_uri_schemes
+     * @param string $scheme
+     */
+    public function test_valid_schemes_are_accepted(string $scheme)
+    {
+        $uri = self::uri()->withScheme($scheme);
+        Assert::assertSame($scheme, $uri->getScheme());
+    }
+
     public function test_valid_ports_are_accepted()
     {
         $uri = self::uri();
