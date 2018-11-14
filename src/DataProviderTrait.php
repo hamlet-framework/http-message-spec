@@ -170,8 +170,7 @@ trait DataProviderTrait
             'with-space'   => ['foo bar baz'],
             'invalid-type' => [12],
             'null'         => [null],
-            'object'       => [new \stdClass()],
-            'eol'          => ["\0"]
+            'object'       => [new \stdClass()]
         ];
     }
 
