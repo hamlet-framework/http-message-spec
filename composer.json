@@ -1,7 +1,7 @@
 {
-  "name": "hamlet-framework/http-message-test",
+  "name": "hamlet-framework/http-message-spec",
   "type": "framework",
-  "description": "Hamlet Framework / HTTP / Message / Test",
+  "description": "Hamlet Framework / HTTP / Message / Spec",
   "keywords": ["framework"],
   "license": "Apache-2.0",
   "authors": [
