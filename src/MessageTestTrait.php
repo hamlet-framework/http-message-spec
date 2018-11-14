@@ -300,4 +300,48 @@ trait MessageTestTrait
     {
         Assert::assertInstanceOf(StreamInterface::class, $this->message()->getBody());
     }
+
+    public function test_header_values_are_trimmed()
+    {
+        $message1 = $this->message()->withHeader('OWS', " \t \tFoo\t \t ");
+        $message2 = $this->message()->withAddedHeader('OWS', " \t \tFoo\t \t ");;
+        foreach ([$message1, $message2] as $message) {
+            $this->assertSame(['OWS' => ['Foo']], $message->getHeaders());
+            $this->assertSame('Foo', $message->getHeaderLine('OWS'));
+            $this->assertSame(['Foo'], $message->getHeader('OWS'));
+        }
+    }
+
+    /**
+     * @dataProvider headers_with_injection_vectors
+     * @expectException InvalidArgumentException
+     * @param $name
+     * @param $value
+     */
+    public function test_with_header_rejects_headers_with_crlf_vectors($name, $value)
+    {
+        $this->message()->withHeader($name, $value);
+    }
+
+    /**
+     * @dataProvider headers_with_injection_vectors
+     * @expectException InvalidArgumentException
+     * @param $name
+     * @param $value
+     */
+    public function test_with_added_header_rejects_headers_with_crlf_vectors($name, $value)
+    {
+        $this->message()->withAddedHeader($name, $value);
+    }
+
+    /**
+     * @dataProvider invalid_body
+     * @expectException InvalidArgumentException
+     * @param $body
+     */
+    public function test_setting_invalid_body_raises_exception($body)
+    {
+        $message = $this->message()->withBody($body);
+        $message->getBody();
+    }
 }

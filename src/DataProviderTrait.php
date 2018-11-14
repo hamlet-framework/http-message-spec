@@ -756,6 +756,19 @@ trait DataProviderTrait
         ];
     }
 
+    public function invalid_body()
+    {
+        return [
+            'null'      => [null],
+            'true'      => [true],
+            'false'     => [false],
+            'int'       => [1],
+            'float'     => [1.1],
+            'array'     => [['BODY']],
+            'stdClass'  => [(object)['body' => 'BODY']]
+        ];
+    }
+
     public function invalid_parsed_body()
     {
         return [
@@ -841,5 +854,52 @@ trait DataProviderTrait
                 yield [$mode];
             }
         }
+    }
+
+    public function invalid_status_codes()
+    {
+        return [
+            'true'     => [true],
+            'false'    => [false],
+            'array'    => [[200]],
+            'object'   => [(object)['statusCode' => 200]],
+            'too-low'  => [99],
+            'float'    => [400.5],
+            'too-high' => [600],
+            'null'     => [null],
+            'string'   => ['foo'],
+        ];
+    }
+
+    public function invalid_reason_phrases()
+    {
+        return [
+            'true'    => [true],
+            'false'   => [false],
+            'array'   => [[200]],
+            'object'  => [(object)['reasonPhrase' => 'Ok']],
+            'integer' => [99],
+            'float'   => [400.5],
+            'null'    => [null],
+            'lambda'  => [function () {}]
+        ];
+    }
+
+    public function headers_with_injection_vectors()
+    {
+        return [
+            'name-with-cr'           => ["X-Foo\r-Bar", 'value'],
+            'name-with-lf'           => ["X-Foo\n-Bar", 'value'],
+            'name-with-crlf'         => ["X-Foo\r\n-Bar", 'value'],
+            'name-with-2crlf'        => ["X-Foo\r\n\r\n-Bar", 'value'],
+            'value-with-cr'          => ['X-Foo-Bar', "value\rinjection"],
+            'value-with-lf'          => ['X-Foo-Bar', "value\ninjection"],
+            'value-with-crlf'        => ['X-Foo-Bar', "value\r\ninjection"],
+            'value-with-2crlf'       => ['X-Foo-Bar', "value\r\n\r\ninjection"],
+            'array-value-with-cr'    => ['X-Foo-Bar', ["value\rinjection"]],
+            'array-value-with-lf'    => ['X-Foo-Bar', ["value\ninjection"]],
+            'array-value-with-crlf'  => ['X-Foo-Bar', ["value\r\ninjection"]],
+            'array-value-with-2crlf' => ['X-Foo-Bar', ["value\r\n\r\ninjection"]],
+        ];
     }
 }

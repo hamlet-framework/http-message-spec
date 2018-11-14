@@ -2,348 +2,96 @@
 
 namespace Hamlet\Http\Message\Spec\Traits;
 
+use Exception;
 use InvalidArgumentException;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 trait ResponseTestTrait
 {
     abstract protected function response(): ResponseInterface;
 
-    public function testDefaultConstructor()
+    public function test_default_properties()
     {
-        $r = self::response();
-        $this->assertSame(200, $r->getStatusCode());
-        $this->assertSame('1.1', $r->getProtocolVersion());
-        $this->assertSame('OK', $r->getReasonPhrase());
-        $this->assertSame([], $r->getHeaders());
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
-        $this->assertSame('', (string)$r->getBody());
+        $response = $this->response();
+        Assert::assertSame(200, $response->getStatusCode());
+        Assert::assertSame('1.1', $response->getProtocolVersion());
+        Assert::assertSame('OK', $response->getReasonPhrase());
+        Assert::assertSame([], $response->getHeaders());
+        Assert::assertInstanceOf(StreamInterface::class, $response->getBody());
+        Assert::assertSame('', (string) $response->getBody());
     }
 
-    public function testWithStatusCodeAndNoReason()
+    // @todo loop though values
+    public function test_reason_phrase_deduced_from_status_code()
     {
-        $r = self::response()->withStatus(201);
-        $this->assertSame(201, $r->getStatusCode());
-        $this->assertSame('Created', $r->getReasonPhrase());
+        $response = $this->response()->withStatus(201);
+
+        Assert::assertSame(201, $response->getStatusCode());
+        Assert::assertSame('Created', $response->getReasonPhrase());
     }
 
     public function testWithStatusCodeAndReason()
     {
-        $r = self::response()->withStatus(201, 'Foo');
-        $this->assertSame(201, $r->getStatusCode());
-        $this->assertSame('Foo', $r->getReasonPhrase());
-        $r = self::response()->withStatus(201, '0');
-        $this->assertSame(201, $r->getStatusCode());
-        $this->assertSame('0', $r->getReasonPhrase(), 'Falsey reason works');
+        $r = $this->response()->withStatus(201, 'Foo');
+        Assert::assertSame(201, $r->getStatusCode());
+        Assert::assertSame('Foo', $r->getReasonPhrase());
+        $r = $this->response()->withStatus(201, '0');
+        Assert::assertSame(201, $r->getStatusCode());
+        Assert::assertSame('0', $r->getReasonPhrase(), 'Falsey reason works');
     }
 
-    public function testWithProtocolVersion()
+    /**
+     * @throws Exception
+     */
+    public function test_can_set_custom_code_and_reason_phrase()
     {
-        $r = self::response()->withProtocolVersion('1000');
-        $this->assertSame('1000', $r->getProtocolVersion());
+        $code = rand(100, 999);
+        $reason = md5(random_bytes(32));
+
+        $response = $this->response()->withStatus($code, $reason);
+        Assert::assertSame($code, $response->getStatusCode());
+        Assert::assertSame($reason, $response->getReasonPhrase());
     }
 
-    public function testSameInstanceWhenSameProtocol()
+    /**
+     * @dataProvider invalid_reason_phrases
+     * @expectException InvalidArgumentException
+     * @param $phrase
+     */
+    public function test_with_status_rejects_invalid_reason_phrases($phrase)
     {
-        $r = self::response();
-        $this->assertSame($r, $r->withProtocolVersion('1.1'));
+        $this->response()->withStatus(422, $phrase);
     }
 
-    public function testSameInstanceWhenSameBody()
+    public function test_with_status_accepts_valid_values()
     {
-        $r = self::response();
-        $b = $r->getBody();
-        $this->assertSame($r, $r->withBody($b));
-    }
-
-    public function testWithHeader()
-    {
-        $r = self::response()->withStatus(200)->withHeader('Foo', 'Bar');
-        $r2 = $r->withHeader('baZ', 'Bam');
-        $this->assertSame(['Foo' => ['Bar']], $r->getHeaders());
-        $this->assertSame(['Foo' => ['Bar'], 'baZ' => ['Bam']], $r2->getHeaders());
-        $this->assertSame('Bam', $r2->getHeaderLine('baz'));
-        $this->assertSame(['Bam'], $r2->getHeader('baz'));
-    }
-
-    public function testSameInstanceWhenRemovingMissingHeader()
-    {
-        $r = self::response();
-        $this->assertSame($r, $r->withoutHeader('foo'));
-    }
-
-    public function testHeaderValuesAreTrimmed()
-    {
-        $r1 = self::response()->withHeader('OWS', " \t \tFoo\t \t ");
-        $r2 = self::response()->withAddedHeader('OWS', " \t \tFoo\t \t ");;
-        foreach ([$r1, $r2] as $r) {
-            $this->assertSame(['OWS' => ['Foo']], $r->getHeaders());
-            $this->assertSame('Foo', $r->getHeaderLine('OWS'));
-            $this->assertSame(['Foo'], $r->getHeader('OWS'));
+        for ($i = 0; $i < 100; $i++) {
+            $code = rand(100, 999);
+            $response = $this->response()->withStatus($code);
+            $result = $response->getStatusCode();
+            Assert::assertSame((int)$code, $result);
+            Assert::assertInternalType('int', $result);
         }
-    }
-
-    public function testStatusCodeIs200ByDefault()
-    {
-        $this->assertSame(200, self::response()->getStatusCode());
-    }
-
-    public function testStatusCodeMutatorReturnsCloneWithChanges()
-    {
-        $response = self::response()->withStatus(400);
-        $this->assertNotSame(self::response(), $response);
-        $this->assertSame(400, $response->getStatusCode());
-    }
-
-    public function testReasonPhraseDefaultsToStandards()
-    {
-        $response = self::response()->withStatus(422);
-        $this->assertSame('Unprocessable Entity', $response->getReasonPhrase());
-    }
-
-    public function testCanSetCustomReasonPhrase()
-    {
-        $response = self::response()->withStatus(422, 'Foo Bar!');
-        $this->assertSame('Foo Bar!', $response->getReasonPhrase());
-    }
-
-    public function invalidReasonPhrases()
-    {
-        return [
-            'true' => [true],
-            'false' => [false],
-            'array' => [[200]],
-            'object' => [(object)['reasonPhrase' => 'Ok']],
-            'integer' => [99],
-            'float' => [400.5],
-            'null' => [null],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidReasonPhrases
-     * @param $invalidReasonPhrase
-     */
-    public function testWithStatusRaisesAnExceptionForNonStringReasonPhrases($invalidReasonPhrase)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        self::response()->withStatus(422, $invalidReasonPhrase);
-    }
-
-    /**
-     * @dataProvider validStatusCodes
-     * @param $code
-     */
-    public function testCreateWithValidStatusCodes($code)
-    {
-        $response = self::response()->withStatus($code);
-        $result = $response->getStatusCode();
-        $this->assertSame((int)$code, $result);
-        $this->assertInternalType('int', $result);
-    }
-
-    public function validStatusCodes()
-    {
-        return [
-            'minimum' => [100],
-            'middle' => [300],
-            'string-integer' => ['300'],
-            'maximum' => [599],
-        ];
     }
 
     /**
      * @dataProvider invalidStatusCodes
+     * @expectException InvalidArgumentException
      * @param $code
      */
-    public function testCannotSetInvalidStatusCode($code)
+    public function test_with_status_rejects_invalid_codes($code)
     {
-        $this->expectException(InvalidArgumentException::class);
-        self::response()->withStatus($code);
+        $response = $this->response()->withStatus($code);
+        $response->getStatusCode();
     }
 
-    public function invalidStatusCodes()
+    public function test_reason_phrase_for_unknown_code_is_empty_string()
     {
-        return [
-            'true' => [true],
-            'false' => [false],
-            'array' => [[200]],
-            'object' => [(object)['statusCode' => 200]],
-            'too-low' => [99],
-            'float' => [400.5],
-            'too-high' => [600],
-            'null' => [null],
-            'string' => ['foo'],
-        ];
-    }
+        $response = $this->response()->withStatus(555);
 
-    public function invalidResponseBody()
-    {
-        return [
-            'true' => [true],
-            'false' => [false],
-            'int' => [1],
-            'float' => [1.1],
-            'array' => [['BODY']],
-            'stdClass' => [(object)['body' => 'BODY']],
-        ];
-    }
-
-    /**
-     * @dataProvider invalidResponseBody
-     * @param $body
-     */
-    public function testConstructorRaisesExceptionForInvalidBody($body)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('stream');
-        self::response()->withBody($body);
-    }
-
-    public function invalidHeaderTypes()
-    {
-        return [
-            'indexed-array' => [[['INVALID']], 'header name'],
-            'null' => [['x-invalid-null' => null]],
-            'true' => [['x-invalid-true' => true]],
-            'false' => [['x-invalid-false' => false]],
-            'object' => [['x-invalid-object' => (object)['INVALID']]],
-        ];
-    }
-
-    public function testReasonPhraseCanBeEmpty()
-    {
-        $response = self::response()->withStatus(555);
-        $this->assertInternalType('string', $response->getReasonPhrase());
-        $this->assertEmpty($response->getReasonPhrase());
-    }
-
-    public function headersWithInjectionVectors()
-    {
-        return [
-            'name-with-cr' => ["X-Foo\r-Bar", 'value'],
-            'name-with-lf' => ["X-Foo\n-Bar", 'value'],
-            'name-with-crlf' => ["X-Foo\r\n-Bar", 'value'],
-            'name-with-2crlf' => ["X-Foo\r\n\r\n-Bar", 'value'],
-            'value-with-cr' => ['X-Foo-Bar', "value\rinjection"],
-            'value-with-lf' => ['X-Foo-Bar', "value\ninjection"],
-            'value-with-crlf' => ['X-Foo-Bar', "value\r\ninjection"],
-            'value-with-2crlf' => ['X-Foo-Bar', "value\r\n\r\ninjection"],
-            'array-value-with-cr' => ['X-Foo-Bar', ["value\rinjection"]],
-            'array-value-with-lf' => ['X-Foo-Bar', ["value\ninjection"]],
-            'array-value-with-crlf' => ['X-Foo-Bar', ["value\r\ninjection"]],
-            'array-value-with-2crlf' => ['X-Foo-Bar', ["value\r\n\r\ninjection"]],
-        ];
-    }
-
-    /**
-     * @group ZF2015-04
-     * @dataProvider headersWithInjectionVectors
-     * @param $name
-     * @param $value
-     */
-    public function testConstructorRaisesExceptionForHeadersWithCRLFVectors($name, $value)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        self::response()->withHeader($name, $value);
-    }
-
-    public function testDisableSetter()
-    {
-        $response = self::response();
-        $response->foo = 'bar';
-        $this->assertFalse(property_exists($response, 'foo'));
-    }
-
-    /*******************************************************************************
-     * Status
-     ******************************************************************************/
-
-    public function testWithStatus()
-    {
-        $response = self::response();
-        $clone = $response->withStatus(302);
-        $this->assertAttributeEquals(302, 'status', $clone);
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testWithStatusInvalidStatusCodeThrowsException()
-    {
-        $response = self::response();
-        $response->withStatus(800);
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage ReasonPhrase must be a string
-     */
-    public function testWithStatusInvalidReasonPhraseThrowsException()
-    {
-        $response = self::response();
-        $response->withStatus(200, null);
-    }
-
-    public function testWithStatusEmptyReasonPhrase()
-    {
-        $responseWithNoMessage = self::response()->withStatus(310);
-        $this->assertEquals('', $responseWithNoMessage->getReasonPhrase());
-    }
-
-    public function testGetReasonPhrase()
-    {
-        $response = self::response()->withStatus(404);
-        $this->assertEquals('Not Found', $response->getReasonPhrase());
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage ReasonPhrase must be supplied for this code
-     */
-    public function testMustSetReasonPhraseForUnrecognisedCode()
-    {
-        $response = self::response();
-        $response = $response->withStatus(199);
-    }
-
-    public function testSetReasonPhraseForUnrecognisedCode()
-    {
-        $response = self::response();
-        $response = $response->withStatus(199, 'Random Message');
-        $this->assertEquals('Random Message', $response->getReasonPhrase());
-    }
-
-    public function testGetCustomReasonPhrase()
-    {
-        $response = self::response();
-        $clone = $response->withStatus(200, 'Custom Phrase');
-        $this->assertEquals('Custom Phrase', $clone->getReasonPhrase());
-    }
-
-    public function testWithAndGetStatusCode()
-    {
-        $response = self::response();
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $res = $response->withStatus(403);
-        $this->assertNotSame($res, $response);
-        $this->assertEquals(403, $res->getStatusCode());
-        $res = $res->withStatus(500, 'Unknown error');
-        $this->assertEquals(500, $res->getStatusCode());
-        $this->assertEquals('Unknown error', $res->getReasonPhrase());
-    }
-
-    public function testGetReasonPhrase2()
-    {
-        $res = self::response();
-        $res = $res->withStatus(200);
-        $this->assertEquals('OK', $res->getReasonPhrase());
-        $res = $res->withStatus(400);
-        $this->assertEquals('Bad Request', $res->getReasonPhrase());
-        $res = $res->withStatus(404);
-        $this->assertEquals('Not Found', $res->getReasonPhrase());
-        $res = $res->withStatus(500);
-        $this->assertEquals('Internal Server Error', $res->getReasonPhrase());
+        Assert::assertInternalType('string', $response->getReasonPhrase());
+        Assert::assertEmpty($response->getReasonPhrase());
     }
 }
