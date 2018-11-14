@@ -70,36 +70,34 @@ trait UriTestTrait
 
     public function test_recognize_falsey_uri_parts()
     {
-        $uri = self::uri('0://0:0@0/0?0#0');
+        $uri = self::uri('a://0:0@0/0?0#0');
 
-        Assert::assertSame('0', $uri->getScheme());
         Assert::assertSame('0:0@0', $uri->getAuthority());
         Assert::assertSame('0:0', $uri->getUserInfo());
         Assert::assertSame('0', $uri->getHost());
         Assert::assertSame('/0', $uri->getPath());
         Assert::assertSame('0', $uri->getQuery());
         Assert::assertSame('0', $uri->getFragment());
-        Assert::assertSame('0://0:0@0/0?0#0', (string)$uri);
+        Assert::assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
     public function test_accepts_falsey_uri_parts()
     {
         $uri = self::uri()
-            ->withScheme('0')
+            ->withScheme('a')
             ->withUserInfo('0', '0')
             ->withHost('0')
             ->withPath('/0')
             ->withQuery('0')
             ->withFragment('0');
 
-        Assert::assertSame('0', $uri->getScheme());
         Assert::assertSame('0:0@0', $uri->getAuthority());
         Assert::assertSame('0:0', $uri->getUserInfo());
         Assert::assertSame('0', $uri->getHost());
         Assert::assertSame('/0', $uri->getPath());
         Assert::assertSame('0', $uri->getQuery());
         Assert::assertSame('0', $uri->getFragment());
-        Assert::assertSame('0://0:0@0/0?0#0', (string)$uri);
+        Assert::assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
     public function test_scheme_is_normalized_to_lowercase()

@@ -251,8 +251,7 @@ trait DataProviderTrait
             [new \stdClass()],
             // incorrect port numbers
             ['//example.com:0'],
-            ['//example.com:10000000'],
-            ['http://a:b:c@example.com'],
+            ['//example.com:10000000']
         ];
     }
 
@@ -277,7 +276,6 @@ trait DataProviderTrait
             [null, null],
             [true, null],
             [new \stdClass(), null],
-            ['user', null],
             ['user', true],
             ['user', new \stdClass()]
         ];
@@ -292,10 +290,7 @@ trait DataProviderTrait
             [true],
             [new \stdClass()],
             [['example.com']],
-            [function() {}],
-            ['example.com!'],
-            ['example com'],
-            ['&that']
+            [function() {}]
         ];
     }
 
@@ -308,7 +303,6 @@ trait DataProviderTrait
             [PHP_INT_MIN],
             [0xffff + 1],
             [rand(0xffff + 1, 0xfffff)],
-            [null],
             ['100'],
             [7.4],
             [true],
