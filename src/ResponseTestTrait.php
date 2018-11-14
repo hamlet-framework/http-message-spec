@@ -32,11 +32,12 @@ trait ResponseTestTrait
         Assert::assertSame('Created', $response->getReasonPhrase());
     }
 
-    public function testWithStatusCodeAndReason()
+    public function test_with_status_code_and_reason()
     {
         $r = $this->response()->withStatus(201, 'Foo');
         Assert::assertSame(201, $r->getStatusCode());
         Assert::assertSame('Foo', $r->getReasonPhrase());
+
         $r = $this->response()->withStatus(201, '0');
         Assert::assertSame(201, $r->getStatusCode());
         Assert::assertSame('0', $r->getReasonPhrase(), 'Falsey reason works');
