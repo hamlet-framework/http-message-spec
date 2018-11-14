@@ -261,14 +261,16 @@ trait DataProviderTrait
         return [
             [0],
             [null],
-            ['100'],
             [7.4],
             [true],
-            [new \stdClass()]
+            [new \stdClass()],
+            [function () {}],
+            [':80'],
+            ['80 but not always']
         ];
     }
 
-    public function invalid_user_info()
+    public function invalid_uri_user_infos()
     {
         return [
             [0, null],
@@ -286,10 +288,14 @@ trait DataProviderTrait
         return [
             [0],
             [null],
-            ['100'],
             [7.4],
             [true],
-            [new \stdClass()]
+            [new \stdClass()],
+            [['example.com']],
+            [function() {}],
+            ['example.com!'],
+            ['example com'],
+            ['&that']
         ];
     }
 
@@ -297,13 +303,18 @@ trait DataProviderTrait
     {
         return [
             [0],
+            [-2],
+            [PHP_INT_MAX],
+            [PHP_INT_MIN],
             [0xffff + 1],
-            [rand(0xffff, 0xfffff)],
+            [rand(0xffff + 1, 0xfffff)],
             [null],
             ['100'],
             [7.4],
             [true],
-            [new \stdClass()]
+            [new \stdClass()],
+            [':80'],
+            ['80 but not always']
         ];
     }
 
