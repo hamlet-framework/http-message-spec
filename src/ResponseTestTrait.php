@@ -57,7 +57,7 @@ trait ResponseTestTrait
 
     /**
      * @dataProvider invalid_reason_phrases
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param $phrase
      */
     public function test_with_status_rejects_invalid_reason_phrases($phrase)
@@ -78,7 +78,7 @@ trait ResponseTestTrait
 
     /**
      * @dataProvider invalidStatusCodes
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param $code
      */
     public function test_with_status_rejects_invalid_codes($code)

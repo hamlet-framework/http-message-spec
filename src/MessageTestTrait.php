@@ -314,7 +314,7 @@ trait MessageTestTrait
 
     /**
      * @dataProvider headers_with_injection_vectors
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param $name
      * @param $value
      */
@@ -325,7 +325,7 @@ trait MessageTestTrait
 
     /**
      * @dataProvider headers_with_injection_vectors
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param $name
      * @param $value
      */
@@ -336,7 +336,7 @@ trait MessageTestTrait
 
     /**
      * @dataProvider invalid_body
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param $body
      */
     public function test_setting_invalid_body_raises_exception($body)
