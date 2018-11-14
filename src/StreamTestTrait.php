@@ -329,7 +329,7 @@ trait StreamTestTrait
 
     /**
      * @dataProvider invalid_resources
-     * @expectException InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @param mixed $handle
      */
     public function test_passing_invalid_stream_resource_to_constructor_raises_exception($handle)
@@ -476,7 +476,7 @@ trait StreamTestTrait
     }
 
     /**
-     * @expectException RuntimeException
+     * @expectedException RuntimeException
      */
     public function test_seek_raises_exception_when_stream_is_detached()
     {
@@ -506,7 +506,7 @@ trait StreamTestTrait
     }
 
     /**
-     * @expectException RuntimeException
+     * @expectedException RuntimeException
      */
     public function test_write_raises_exception_when_stream_is_detached()
     {
@@ -520,7 +520,7 @@ trait StreamTestTrait
 
     /**
      * @dataProvider non_writable_modes
-     * @expectException RuntimeException
+     * @expectedException RuntimeException
      * @param string $mode
      */
     public function test_write_raises_exception_when_stream_is_not_writable(string $mode)
@@ -541,7 +541,7 @@ trait StreamTestTrait
     }
 
     /**
-     * @expectException RuntimeException
+     * @expectedException RuntimeException
      */
     public function test_read_raises_exception_when_stream_is_detached()
     {
@@ -567,7 +567,7 @@ trait StreamTestTrait
 
     /**
      * @dataProvider non_readable_modes
-     * @expectException RuntimeException
+     * @expectedException RuntimeException
      * @param string $mode
      */
     public function test_get_contents_raises_exception_if_stream_is_not_readable(string $mode)
