@@ -320,7 +320,8 @@ trait MessageTestTrait
      */
     public function test_with_header_rejects_headers_with_crlf_vectors($name, $value)
     {
-        $this->message()->withHeader($name, $value);
+        $message = $this->message()->withHeader($name, $value);
+        $message->getHeaders();
     }
 
     /**
@@ -331,7 +332,8 @@ trait MessageTestTrait
      */
     public function test_with_added_header_rejects_headers_with_crlf_vectors($name, $value)
     {
-        $this->message()->withAddedHeader($name, $value);
+        $message = $this->message()->withAddedHeader($name, $value);
+        $message->getHeaders();
     }
 
     /**
