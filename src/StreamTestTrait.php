@@ -2,6 +2,7 @@
 
 namespace Hamlet\Http\Message\Spec\Traits;
 
+use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use Psr\Http\Message\StreamInterface;
@@ -10,6 +11,15 @@ use RuntimeException;
 trait StreamTestTrait
 {
     abstract protected function stream($handle): StreamInterface;
+
+    protected function tempFileName(): string
+    {
+        try {
+            return tempnam(sys_get_temp_dir(), 'psr-7') . '.' . md5(time() . random_bytes(12));
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
+    }
 
     public function test_constructor_initializes_properties()
     {
@@ -287,7 +297,7 @@ trait StreamTestTrait
      */
     public function test_is_readable_returns_false_if_stream_is_not_readable(string $mode)
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         $handle = fopen($name, $mode);
 
         $stream = $this->stream($handle);
@@ -339,7 +349,7 @@ trait StreamTestTrait
 
     public function test_string_serialization_empty_when_stream_not_readable()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
 
         $handle = fopen($name, 'w');
@@ -349,7 +359,7 @@ trait StreamTestTrait
 
     public function test_close_unsets_resource()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         $handle = fopen($name, 'wb+');
 
         $stream = $this->stream($handle);
@@ -359,7 +369,7 @@ trait StreamTestTrait
 
     public function test_close_does_nothing_after_detach()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
         $detached = $stream->detach();
@@ -370,7 +380,7 @@ trait StreamTestTrait
 
     public function test_size_reports_null_when_no_resource_present()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         $resource = fopen($name, 'rw');
         $stream = $this->stream($resource);
         $stream->write('here we go');
@@ -381,7 +391,7 @@ trait StreamTestTrait
 
     public function test_tell_reports_current_position_in_resource()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -391,7 +401,7 @@ trait StreamTestTrait
 
     public function test_tell_raises_exception_if_resource_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -404,7 +414,7 @@ trait StreamTestTrait
 
     public function test_eof_reports_false_when_not_at_end_of_stream()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -414,7 +424,7 @@ trait StreamTestTrait
 
     public function test_eof_reports_true_when_at_end_of_stream()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -426,7 +436,7 @@ trait StreamTestTrait
 
     public function test_eof_reports_true_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -437,7 +447,7 @@ trait StreamTestTrait
 
     public function test_is_seekable_returns_true_for_readable_streams()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -446,7 +456,7 @@ trait StreamTestTrait
 
     public function test_is_seekable_returns_false_for_detached_streams()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -456,7 +466,7 @@ trait StreamTestTrait
 
     public function test_seek_advances_to_given_offset_of_stream()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -466,7 +476,7 @@ trait StreamTestTrait
 
     public function test_rewind_resets_to_start_of_stream()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -480,7 +490,7 @@ trait StreamTestTrait
      */
     public function test_seek_raises_exception_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -490,7 +500,7 @@ trait StreamTestTrait
 
     public function test_is_writable_returns_false_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -510,7 +520,7 @@ trait StreamTestTrait
      */
     public function test_write_raises_exception_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -532,7 +542,7 @@ trait StreamTestTrait
 
     public function test_is_readable_returns_false_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
         $stream = $this->stream($resource);
@@ -545,7 +555,7 @@ trait StreamTestTrait
      */
     public function test_read_raises_exception_when_stream_is_detached()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'r');
         $stream = $this->stream($resource);
@@ -555,7 +565,7 @@ trait StreamTestTrait
 
     public function test_read_returns_empty_string_when_at_end_of_file()
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'r');
         $stream = $this->stream($resource);
@@ -572,7 +582,7 @@ trait StreamTestTrait
      */
     public function test_get_contents_raises_exception_if_stream_is_not_readable(string $mode)
     {
-        $name = tempnam(sys_get_temp_dir(), 'psr-7');
+        $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, $mode);
         $stream = $this->stream($resource);
