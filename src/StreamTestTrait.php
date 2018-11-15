@@ -399,6 +399,9 @@ trait StreamTestTrait
         Assert::assertSame(2, $stream->tell());
     }
 
+    /**
+     * @expectedException RuntimeException
+     */
     public function test_tell_raises_exception_if_resource_is_detached()
     {
         $name = $this->tempFileName();
@@ -407,8 +410,6 @@ trait StreamTestTrait
         $stream = $this->stream($resource);
         fseek($resource, 2);
         $stream->detach();
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('No resource');
         $stream->tell();
     }
 
