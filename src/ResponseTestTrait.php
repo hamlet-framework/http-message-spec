@@ -78,7 +78,7 @@ trait ResponseTestTrait
     }
 
     /**
-     * @dataProvider invalidStatusCodes
+     * @dataProvider invalid_status_codes
      * @expectedException InvalidArgumentException
      * @param $code
      */
