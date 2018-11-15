@@ -281,19 +281,6 @@ trait UriTestTrait
         Assert::assertSame('??=%23&%E2%82%AC=/&b%61r', (string) $uri);
     }
 
-    public function test_immutabilit_y()
-    {
-        $uri = self::uri();
-
-        Assert::assertNotSame($uri, $uri->withScheme('https'));
-        Assert::assertNotSame($uri, $uri->withUserInfo('user', 'pass'));
-        Assert::assertNotSame($uri, $uri->withHost('example.com'));
-        Assert::assertNotSame($uri, $uri->withPort(8080));
-        Assert::assertNotSame($uri, $uri->withPath('/path/123'));
-        Assert::assertNotSame($uri, $uri->withQuery('q=abc'));
-        Assert::assertNotSame($uri, $uri->withFragment('test'));
-    }
-
     /**
      * @dataProvider invalid_uris
      * @param string $uri

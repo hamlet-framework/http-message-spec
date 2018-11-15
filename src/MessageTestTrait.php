@@ -199,7 +199,7 @@ trait MessageTestTrait
      */
     public function test_host_header_name_gets_normalized(string $name)
     {
-        $value = base64_encode(random_bytes(12));
+        $value = md5(random_bytes(12)) . '.com';
         $headers = $this->message()->withHeader($name, $value)->getHeaders();
 
         Assert::assertArrayHasKey('Host', $headers);
