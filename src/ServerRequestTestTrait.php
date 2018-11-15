@@ -112,7 +112,7 @@ trait ServerRequestTestTrait
     public function test_with_attribute_accepts_valid_names_and_values($name, $value)
     {
         $request = self::serverRequest()->withAttribute($name, $value);
-        Assert::assertSame($value, $request->getAttributes());
+        Assert::assertSame($value, $request->getAttribute($name));
     }
 
     /**
@@ -125,7 +125,7 @@ trait ServerRequestTestTrait
         $value = rand(1, 100);
 
         $request = self::serverRequest()->withAttribute($name, $value);
-        Assert::assertSame($value, $request->withoutAttribute($name)->getAttributes());
+        Assert::assertSame([], $request->withoutAttribute($name)->getAttributes());
     }
 
     /**
@@ -135,7 +135,8 @@ trait ServerRequestTestTrait
      */
     public function test_with_query_params_rejects_invalid_values($value)
     {
-        self::serverRequest()->withQueryParams($value);
+        $message = self::serverRequest()->withQueryParams($value);
+        $message->getQueryParams();
     }
 
     /**
@@ -145,7 +146,8 @@ trait ServerRequestTestTrait
      */
     public function test_with_cookie_params_rejects_invalid_values($value)
     {
-        self::serverRequest()->withCookieParams($value);
+        $message = self::serverRequest()->withCookieParams($value);
+        $message->getCookieParams();
     }
 
     /**
@@ -155,7 +157,8 @@ trait ServerRequestTestTrait
      */
     public function test_with_uploaded_files_rejects_invalid_values($value)
     {
-        self::serverRequest()->withUploadedFiles($value);
+        $message = self::serverRequest()->withUploadedFiles($value);
+        $message->getUploadedFiles();
     }
 
     /**
@@ -165,7 +168,8 @@ trait ServerRequestTestTrait
      */
     public function test_with_parsed_body_rejects_invalid_values($value)
     {
-        self::serverRequest()->withParsedBody($value);
+        $message = self::serverRequest()->withParsedBody($value);
+        $message->getParsedBody();
     }
 
     /**
@@ -176,7 +180,8 @@ trait ServerRequestTestTrait
      */
     public function test_with_attribute_accepts_rejects_invalid_values($name, $value)
     {
-        self::serverRequest()->withAttribute($name, $value);
+        $message = self::serverRequest()->withAttribute($name, $value);
+        $message->getAttributes();
     }
 
     /**
@@ -186,6 +191,7 @@ trait ServerRequestTestTrait
      */
     public function test_without_attribute_rejects_invalid_values($name)
     {
-        self::serverRequest()->withoutAttribute($name);
+        $message = self::serverRequest()->withoutAttribute($name);
+        $message->getAttributes();
     }
 }
