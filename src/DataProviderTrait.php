@@ -665,8 +665,8 @@ trait DataProviderTrait
     {
         return [
             [[]],
-            [['a' => 1]],
-            [['a' => [1, 2, 3]]]
+            [['a' => '1']],
+            [['a' => ['1', '2', '3']]]
         ];
     }
 
@@ -674,7 +674,7 @@ trait DataProviderTrait
     {
         return [
             [[]],
-            [['a' => 1]],
+            [['a' => '1']],
             [['a' => 'value']]
         ];
     }
@@ -686,12 +686,12 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_parsed_body()
+    public function valid_parsed_bodies()
     {
         return [
-            null,
-            [],
-            new \stdClass()
+            [null],
+            [[]],
+            [new \stdClass()]
         ];
     }
 
@@ -769,7 +769,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_parsed_body()
+    public function invalid_parsed_bodies()
     {
         return [
             [1],
