@@ -48,7 +48,7 @@ trait ResponseTestTrait
      */
     public function test_can_set_custom_code_and_reason_phrase()
     {
-        $code = rand(100, 999);
+        $code = rand(100, 599);
         $reason = md5(random_bytes(32));
 
         $response = $this->response()->withStatus($code, $reason);
@@ -69,7 +69,7 @@ trait ResponseTestTrait
     public function test_with_status_accepts_valid_values()
     {
         for ($i = 0; $i < 100; $i++) {
-            $code = rand(100, 999);
+            $code = rand(100, 599);
             $response = $this->response()->withStatus($code);
             $result = $response->getStatusCode();
             Assert::assertSame((int)$code, $result);
