@@ -381,7 +381,7 @@ trait StreamTestTrait
     public function test_size_reports_null_when_no_resource_present()
     {
         $name = $this->tempFileName();
-        $resource = fopen($name, 'rw');
+        $resource = fopen($name, 'w+');
         $stream = $this->stream($resource);
         $stream->write('here we go');
 
@@ -399,9 +399,6 @@ trait StreamTestTrait
         Assert::assertSame(2, $stream->tell());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_tell_raises_exception_if_resource_is_detached()
     {
         $name = $this->tempFileName();
@@ -410,6 +407,8 @@ trait StreamTestTrait
         $stream = $this->stream($resource);
         fseek($resource, 2);
         $stream->detach();
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No resource');
         $stream->tell();
     }
 
@@ -432,17 +431,6 @@ trait StreamTestTrait
         while (!feof($resource)) {
             fread($resource, 4096);
         }
-        Assert::assertTrue($stream->eof());
-    }
-
-    public function test_eof_reports_true_when_stream_is_detached()
-    {
-        $name = $this->tempFileName();
-        file_put_contents($name, 'FOO BAR');
-        $resource = fopen($name, 'wb+');
-        $stream = $this->stream($resource);
-        fseek($resource, 2);
-        $stream->detach();
         Assert::assertTrue($stream->eof());
     }
 
@@ -584,7 +572,9 @@ trait StreamTestTrait
     public function test_get_contents_raises_exception_if_stream_is_not_readable(string $mode)
     {
         $name = $this->tempFileName();
-        file_put_contents($name, 'FOO BAR');
+        if ($mode[0] != 'x') {
+            file_put_contents($name, 'MODE: ' . $mode);
+        }
         $resource = fopen($name, $mode);
         $stream = $this->stream($resource);
         $stream->getContents();
