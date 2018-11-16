@@ -917,14 +917,6 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_file_upload_error_statuses()
-    {
-        return [
-            'negative' => [-1],
-            'too-big'  => [9],
-        ];
-    }
-
     public function invalid_target_paths()
     {
         return [
@@ -950,7 +942,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_file_names_and_media_types()
+    public function invalid_file_names()
     {
         return [
             'true'   => [true],
@@ -960,6 +952,44 @@ trait DataProviderTrait
             'array'  => [['string']],
             'object' => [(object)['string']],
             'lambda' => [function () {}]
+        ];
+    }
+
+    public function invalid_media_types()
+    {
+        return [
+            'true'   => [true],
+            'false'  => [false],
+            'int'    => [1],
+            'float'  => [1.1],
+            'array'  => [['string']],
+            'object' => [(object)['string']],
+            'lambda' => [function () {}]
+        ];
+    }
+
+    public function invalid_file_upload_error_statuses()
+    {
+        return [
+            [-1],
+            [74],
+            [10000],
+            [PHP_INT_MIN],
+            [PHP_INT_MAX],
+            [NAN]
+        ];
+    }
+
+    public function file_upload_error_codes()
+    {
+        return [
+            [\UPLOAD_ERR_INI_SIZE],
+            [\UPLOAD_ERR_FORM_SIZE],
+            [\UPLOAD_ERR_PARTIAL],
+            [\UPLOAD_ERR_NO_FILE],
+            [\UPLOAD_ERR_NO_TMP_DIR],
+            [\UPLOAD_ERR_CANT_WRITE],
+            [\UPLOAD_ERR_EXTENSION],
         ];
     }
 }
