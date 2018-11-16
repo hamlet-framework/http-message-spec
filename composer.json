@@ -10,6 +10,9 @@
       "email": "info@kartashov.com"
     }
   ],
+  "config": {
+    "sort-packages": true
+  },
   "require": {
     "php": "^7.2",
     "psr/http-message": "@stable"

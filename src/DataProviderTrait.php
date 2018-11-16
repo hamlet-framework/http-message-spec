@@ -902,4 +902,64 @@ trait DataProviderTrait
             'array-value-with-2crlf' => ['X-Foo-Bar', ["value\r\n\r\ninjection"]],
         ];
     }
+
+    public function invalid_streams()
+    {
+        return [
+            'null'   => [null],
+            'true'   => [true],
+            'false'  => [false],
+            'int'    => [1],
+            'float'  => [1.1],
+            'array'  => [['filename']],
+            'object' => [(object)['filename']],
+            'lambda' => [function () {}]
+        ];
+    }
+
+    public function invalid_file_upload_error_statuses()
+    {
+        return [
+            'negative' => [-1],
+            'too-big'  => [9],
+        ];
+    }
+
+    public function invalid_target_paths()
+    {
+        return [
+            'null'   => [null],
+            'true'   => [true],
+            'false'  => [false],
+            'int'    => [1],
+            'float'  => [1.1],
+            'empty'  => [''],
+            'array'  => [['filename']],
+            'object' => [(object)['filename']],
+            'lambda' => [function () {}]
+        ];
+    }
+
+    public function invalid_file_sizes()
+    {
+        return [
+            'null'   => [null],
+            'float'  => [1.1],
+            'array'  => [[1]],
+            'object' => [(object)[1]],
+        ];
+    }
+
+    public function invalid_file_names_and_media_types()
+    {
+        return [
+            'true'   => [true],
+            'false'  => [false],
+            'int'    => [1],
+            'float'  => [1.1],
+            'array'  => [['string']],
+            'object' => [(object)['string']],
+            'lambda' => [function () {}]
+        ];
+    }
 }
