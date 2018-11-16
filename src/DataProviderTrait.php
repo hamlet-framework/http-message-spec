@@ -935,36 +935,57 @@ trait DataProviderTrait
     public function invalid_file_sizes()
     {
         return [
-            'null'   => [null],
-            'float'  => [1.1],
-            'array'  => [[1]],
-            'object' => [(object)[1]],
+            'negative' => [-1]
         ];
     }
 
     public function invalid_file_names()
     {
         return [
-            'true'   => [true],
-            'false'  => [false],
-            'int'    => [1],
-            'float'  => [1.1],
-            'array'  => [['string']],
-            'object' => [(object)['string']],
-            'lambda' => [function () {}]
+            'directory-separator' => ['this/is/not/valid'],
+            '0-char'              => ['this is \0 not good either']
+        ];
+    }
+
+    public function valid_media_types()
+    {
+        return [
+            ['audio/aac'],
+            ['application/x-abiword'],
+            ['application/octet-stream'],
+            ['video/x-msvideo'],
+            ['application/vnd.amazon.ebook'],
+            ['application/octet-stream'],
+            ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            ['application/vnd.ms-fontobject'],
+            ['application/epub+zip'],
+            ['application/java-archive'],
+            ['audio/midi'],
+            ['audio/x-midi'],
+            ['video/mpeg'],
+            ['application/vnd.apple.installer+xml'],
+            ['application/vnd.oasis.opendocument.presentation'],
+            ['application/vnd.ms-powerpoint'],
+            ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+            ['application/x-rar-compressed'],
+            ['application/x-sh'],
+            ['/svg+xml'],
+            ['application/x-shockwave-flash'],
+            ['text/plain'],
+            ['application/vnd.visio'],
+            ['font/woff'],
+            ['font/woff2'],
+            ['application/xhtml+xml'],
+            ['application/vnd.ms-excel'],
+            ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
         ];
     }
 
     public function invalid_media_types()
     {
         return [
-            'true'   => [true],
-            'false'  => [false],
-            'int'    => [1],
-            'float'  => [1.1],
-            'array'  => [['string']],
-            'object' => [(object)['string']],
-            'lambda' => [function () {}]
+            ['test\\test'],
+            ['some+monster+media+type/here']
         ];
     }
 
@@ -975,8 +996,7 @@ trait DataProviderTrait
             [74],
             [10000],
             [PHP_INT_MIN],
-            [PHP_INT_MAX],
-            [NAN]
+            [PHP_INT_MAX]
         ];
     }
 

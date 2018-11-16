@@ -3,6 +3,7 @@
 namespace Hamlet\Http\Message\Spec\Traits;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -29,7 +30,7 @@ trait UploadedFileTestTrait
         $stream = $this->stream($resource);
 
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
-        $this->assertSame($stream, $upload->getStream());
+        Assert::assertSame($stream, $upload->getStream());
     }
 
     public function test_setting_resource_returns_wrapped_stream()
@@ -38,7 +39,7 @@ trait UploadedFileTestTrait
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
 
         $uploadStream = $upload->getStream()->detach();
-        $this->assertSame($stream, $uploadStream);
+        Assert::assertSame($stream, $uploadStream);
     }
 
     public function test_move_file_to_designated_path()
@@ -49,11 +50,11 @@ trait UploadedFileTestTrait
 
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
 
-        $to = tempnam(sys_get_temp_dir(), 'diac');
+        $to = tempnam(sys_get_temp_dir(), 'target');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        Assert::assertTrue(file_exists($to));
         $contents = file_get_contents($to);
-        $this->assertSame($stream->__toString(), $contents);
+        Assert::assertSame((string) $stream, $contents);
     }
 
     /**
@@ -83,7 +84,7 @@ trait UploadedFileTestTrait
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
         $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        Assert::assertTrue(file_exists($to));
         $upload->moveTo($to);
     }
 
@@ -98,7 +99,7 @@ trait UploadedFileTestTrait
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
         $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        Assert::assertTrue(file_exists($to));
         $upload->getStream();
     }
 
@@ -108,10 +109,11 @@ trait UploadedFileTestTrait
         $target = tempnam(sys_get_temp_dir(), 'source');
 
         file_put_contents($source, md5(rand(1, 10000) . time()));
+        file_put_contents($target, '0');
         $uploadedFile = $this->uploadedFile($source, 100, UPLOAD_ERR_OK, basename(__FILE__), 'text/plain');
 
         $uploadedFile->moveTo($target);
-        $this->assertSame(file_get_contents($source), file_get_contents($target));
+        Assert::assertSame(file_get_contents($source), file_get_contents($target));
     }
 
     /**
@@ -158,6 +160,16 @@ trait UploadedFileTestTrait
     public function test_invalid_client_file_names_raise_an_exception($fileName)
     {
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $fileName);
+    }
+
+    /**
+     * @dataProvider valid_media_types
+     * @param $mediaType
+     */
+    public function test_valid_media_types_are_accepted($mediaType)
+    {
+        $file = $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
+        Assert::assertSame($mediaType, $file->getClientMediaType());
     }
 
     /**
