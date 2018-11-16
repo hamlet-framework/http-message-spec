@@ -106,14 +106,14 @@ trait UploadedFileTestTrait
     public function test_move_to_creates_stream_only_path_provided()
     {
         $source = tempnam(sys_get_temp_dir(), 'source');
-        $target = tempnam(sys_get_temp_dir(), 'source');
+        $target = tempnam(sys_get_temp_dir(), 'target');
 
-        file_put_contents($source, md5(rand(1, 10000) . time()));
-        file_put_contents($target, '0');
+        $content = md5(rand(1, 10000) . time());
+        file_put_contents($source, $content);
+
         $uploadedFile = $this->uploadedFile($source, 100, UPLOAD_ERR_OK, basename(__FILE__), 'text/plain');
-
         $uploadedFile->moveTo($target);
-        Assert::assertSame(file_get_contents($source), file_get_contents($target));
+        Assert::assertSame($content, file_get_contents($target));
     }
 
     /**
