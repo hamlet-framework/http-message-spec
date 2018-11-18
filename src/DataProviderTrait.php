@@ -215,24 +215,17 @@ trait DataProviderTrait
             ['urn:path:with:colon'],
             ['urn:/path-absolute'],
             ['urn:/'],
-            // only scheme with empty path
             ['urn:'],
-            // only path
             ['/'],
             ['relative/'],
             ['0'],
-            // same document reference
             [''],
-            // network path without scheme
             ['//example.org'],
             ['//example.org/'],
             ['//example.org?q#h'],
-            // only query
             ['?q'],
             ['?q=abc&foo=bar'],
-            // only fragment
             ['#fragment'],
-            // dot segments are not removed automatically
             ['./foo/../bar'],
         ];
     }
@@ -240,17 +233,34 @@ trait DataProviderTrait
     public function invalid_uris()
     {
         return [
-            // parse_url() requires the host component which makes sense for http(s)
-            // but not when the scheme is not known or different. So '//' or '///' is
-            // currently invalid as well but should not according to RFC 3986.
             ['http://'],
-            ['urn://host:with:colon'], // host cannot contain ":"
+            ['urn://host:with:colon'],
             [null],
             [1],
+            [[]],
+            [1.1],
+            [false],
             [new \stdClass()],
-            // incorrect port numbers
+            [function () {}],
             ['//example.com:0'],
-            ['//example.com:10000000']
+            ['//example.com:10000000'],
+            ['0scheme://host/path?query#fragment'],
+            ['://host:80/p?q#f'],
+            ['//host:port/path?query#fragment'],
+            ['//host:-892358/path?query#fragment'],
+            ['scheme://[127.0.0.1]/path?query#fragment'],
+            ['scheme://]::1[/path?query#fragment'],
+            ['scheme://[::1|/path?query#fragment'],
+            ['scheme://|::1]/path?query#fragment'],
+            ['scheme://[::1]./path?query#fragment'],
+            ['scheme://[[::1]]:80/path?query#fragment'],
+            ['scheme://[::1%25%23]/path?query#fragment'],
+            ['scheme://[fe80::1234::%251]/path?query#fragment'],
+            ["scheme://host/path/\r\n/toto"],
+            ['2620:0:1cfe:face:b00c::3'],
+            ['[::1]:80'],
+            ['//[v6.::1]/p?q#f'],
+            ['//a⒈com/p?q#f'],
         ];
     }
 
@@ -969,7 +979,6 @@ trait DataProviderTrait
             ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
             ['application/x-rar-compressed'],
             ['application/x-sh'],
-            ['/svg+xml'],
             ['application/x-shockwave-flash'],
             ['text/plain'],
             ['application/vnd.visio'],
