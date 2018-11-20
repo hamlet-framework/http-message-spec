@@ -10,6 +10,7 @@
       "email": "info@kartashov.com"
     }
   ],
+  "minimum-stability": "dev",
   "config": {
     "sort-packages": true
   },
@@ -18,6 +19,7 @@
     "psr/http-message": "@stable"
   },
   "require-dev": {
+    "hamlet-framework/http-message": "dev-master",
     "phpunit/phpunit": "@stable",
     "guzzlehttp/psr7": "@stable",
     "zendframework/zend-diactoros": "@stable",

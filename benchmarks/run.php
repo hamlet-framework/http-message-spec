@@ -23,23 +23,24 @@ $generators = [
     },
     'zend-diactoros' => function (): ServerRequestInterface {
         return new \Zend\Diactoros\ServerRequest();
-    }
+    },
+    'hamlet-framework' => function (): ServerRequestInterface {
+        return \Hamlet\Http\Message\ServerRequest::empty();
+    },
 ];
 
 $b = new Benchmark;
-$b->setIterations(10000000);
+$b->setIterations(100000);
 foreach ($generators as $name => $generator) {
-    /** @var ServerRequestInterface $instance */
-    $instance = $generator();
-    $b->report($name, function () use ($instance) {
-        $instance = $instance->withAttribute('a', '1')
+    $b->report($name, function () use ($generator) {
+        /** @var ServerRequestInterface $instance */
+        $instance = $generator()->withAttribute('a', '1')
             ->withHeader('hOst', 'mail.ru')
             ->withAddedHeader('Language', 'ru')
             ->withAttribute('name', time());
-
-        $instance->getAttribute('host');
-        $instance->withoutHeader('host');
-        $instance->getAttribute('host');
+        $instance->getUri();
+        $instance->getQueryParams();
+        $instance->getHeaderLine('Host');
     });
 }
 $b->bench();
