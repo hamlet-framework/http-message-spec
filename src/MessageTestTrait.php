@@ -335,15 +335,4 @@ trait MessageTestTrait
         $message = $this->message()->withAddedHeader($name, $value);
         $message->getHeaders();
     }
-
-    /**
-     * @dataProvider invalid_body
-     * @expectedException InvalidArgumentException
-     * @param $body
-     */
-    public function test_setting_invalid_body_raises_exception($body)
-    {
-        $message = $this->message()->withBody($body);
-        $message->getBody();
-    }
 }

@@ -244,23 +244,7 @@ trait DataProviderTrait
             [function () {}],
             ['//example.com:0'],
             ['//example.com:10000000'],
-            ['0scheme://host/path?query#fragment'],
-            ['://host:80/p?q#f'],
-            ['//host:port/path?query#fragment'],
-            ['//host:-892358/path?query#fragment'],
-            ['scheme://[127.0.0.1]/path?query#fragment'],
-            ['scheme://]::1[/path?query#fragment'],
-            ['scheme://[::1|/path?query#fragment'],
-            ['scheme://|::1]/path?query#fragment'],
-            ['scheme://[::1]./path?query#fragment'],
-            ['scheme://[[::1]]:80/path?query#fragment'],
-            ['scheme://[::1%25%23]/path?query#fragment'],
-            ['scheme://[fe80::1234::%251]/path?query#fragment'],
-            ["scheme://host/path/\r\n/toto"],
-            ['2620:0:1cfe:face:b00c::3'],
-            ['[::1]:80'],
-            ['//[v6.::1]/p?q#f'],
-            ['//a⒈com/p?q#f'],
+            ['0scheme://host/path?query#fragment']
         ];
     }
 
@@ -722,60 +706,41 @@ trait DataProviderTrait
     public function invalid_query_params()
     {
         return [
-            [null],
-            [1],
-            [1.1],
-            [false],
-            ['value'],
-            [new \stdClass()],
-            [[1 => new \stdClass()]]
+            [['a' => null]],
+            [['a' => 1]],
+            [['a' => 1.1]],
+            [['a' => false]],
+            [['a' => new \stdClass()]],
+            [[1 => new \stdClass()]],
+            [['x' => function () {}]]
         ];
     }
 
     public function invalid_cookie_params()
     {
         return [
-            [null],
-            [1],
-            [1.1],
-            [false],
-            ['value'],
-            [new \stdClass()],
-            [[1 => new \stdClass()]]
+            [['a' => null]],
+            [['a' => 1]],
+            [['a' => 1.1]],
+            [['a' => false]],
+            [['value']],
+            [['a' => new \stdClass()]],
+            [[1 => new \stdClass()]],
+            [['x' => function () {}]]
         ];
     }
 
     public function invalid_uploaded_files()
     {
         return [
-            [null],
             [[null]],
-            ['file'],
             [['file']],
-            [1],
             [[1]],
-            [1.0],
             [[1.0]],
-            [false],
             [[false]],
-            [new \stdClass()],
             [[new \stdClass()]],
-            [function () {}],
             [[function () {}]],
             [[99 => new \stdClass()]]
-        ];
-    }
-
-    public function invalid_body()
-    {
-        return [
-            'null'      => [null],
-            'true'      => [true],
-            'false'     => [false],
-            'int'       => [1],
-            'float'     => [1.1],
-            'array'     => [['BODY']],
-            'stdClass'  => [(object)['body' => 'BODY']]
         ];
     }
 

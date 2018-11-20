@@ -63,7 +63,9 @@ trait ResponseTestTrait
      */
     public function test_with_status_rejects_invalid_reason_phrases($phrase)
     {
-        $this->response()->withStatus(422, $phrase);
+        $response = $this->response()->withStatus(422, $phrase);
+        $response->getStatusCode();
+        $response->getReasonPhrase();
     }
 
     public function test_with_status_accepts_valid_values()
