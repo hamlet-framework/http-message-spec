@@ -171,7 +171,7 @@ trait UriTestTrait
 
     public function test_standard_port_is_preserved_in_case_schema_changes()
     {
-        $uri = self::uri('http://example.com:443');
+        $uri = self::uri('https://example.com:443');
         Assert::assertNull($uri->getPort());
 
         $uri = $uri->withScheme('http');
