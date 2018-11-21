@@ -9,7 +9,7 @@ $generators = [
     'guzzle' => function (): ServerRequestInterface {
         return new \GuzzleHttp\Psr7\ServerRequest('GET', '');
     },
-    'hyholm' => function(): ServerRequestInterface {
+    'nyholm' => function(): ServerRequestInterface {
         return new \Nyholm\Psr7\ServerRequest('GET', '');
     },
     'ring-central' => function (): ServerRequestInterface {
