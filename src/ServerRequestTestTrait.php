@@ -71,10 +71,10 @@ trait ServerRequestTestTrait
     public function test_with_query_params_accepts_valid_values($value)
     {
         $params = null;
-        parse_url($value, $params);
+        parse_str($value, $params);
 
         $request = self::serverRequest()->withQueryParams($params);
-        Assert::assertSame($value, $request->getQueryParams());
+        Assert::assertSame($params, $request->getQueryParams());
     }
 
     /**
