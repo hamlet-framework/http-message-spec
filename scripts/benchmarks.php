@@ -1,8 +1,8 @@
 <?php
 
+use PHPBenchmark\testing\FunctionComparison;
 use Psr\Http\Message\ServerRequestInterface;
 
-require_once __DIR__ . '/benchmark.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $generators = [
@@ -29,10 +29,10 @@ $generators = [
     },
 ];
 
-$b = new Benchmark;
-$b->setIterations(100000);
-foreach ($generators as $name => $generator) {
-    $b->report($name, function () use ($generator) {
+echo 'Comprehensive test' . PHP_EOL;
+$comparison = FunctionComparison::load(100000);
+foreach ($generators as $title => $generator) {
+    $comparison->addFunction($title, function () use ($generator) {
         /** @var ServerRequestInterface $instance */
         $instance = $generator()->withAttribute('a', '1')
             ->withHeader('hOst', 'mail.ru')
@@ -43,4 +43,17 @@ foreach ($generators as $name => $generator) {
         $instance->getHeaderLine('Host');
     });
 }
-$b->bench();
+$comparison->exec();
+
+echo 'Fetching test' . PHP_EOL;
+$comparison = FunctionComparison::load(100000);
+foreach ($generators as $title => $generator) {
+    $comparison->addFunction($title, function () use ($generator) {
+        /** @var ServerRequestInterface $instance */
+        $instance = $generator();
+        $instance->getMethod();
+        $instance->getQueryParams();
+        $instance->getUri()->getPath();
+    });
+}
+$comparison->exec();
