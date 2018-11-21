@@ -26,7 +26,8 @@
     "slim/slim": "@stable",
     "ringcentral/psr7": "@stable",
     "nyholm/psr7": "@stable",
-    "windwalker/http": "@stable"
+    "windwalker/http": "@stable",
+    "phpbenchmark/phpbenchmark": "@stable"
   },
   "autoload": {
     "psr-4": {

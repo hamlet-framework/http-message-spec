@@ -54,6 +54,9 @@ foreach ($generators as $title => $generator) {
         $instance->getMethod();
         $instance->getQueryParams();
         $instance->getUri()->getPath();
+        $instance->getUri()->getPath();
+        $instance->getUri()->getPath();
+        $instance->getUri()->getPath();
     });
 }
 $comparison->exec();
