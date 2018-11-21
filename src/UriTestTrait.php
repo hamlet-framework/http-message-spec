@@ -169,6 +169,15 @@ trait UriTestTrait
         Assert::assertNull($uri->getPort());
     }
 
+    public function test_standard_port_is_preserved_in_case_schema_changes()
+    {
+        $uri = self::uri('http://example.com:443');
+        Assert::assertNull($uri->getPort());
+
+        $uri = $uri->withScheme('http');
+        Assert::assertEquals(443, $uri->getPort());
+    }
+
     public function test_port_can_be_removed()
     {
         $uri = self::uri('http://example.com:8080')->withPort(null);

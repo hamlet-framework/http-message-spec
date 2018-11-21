@@ -54,8 +54,8 @@ trait ServerRequestTestTrait
     {
         $request1 = self::serverRequest();
 
-        Assert::assertNotSame($request1, $request1->withQueryParams(['a' => 1]));
-        Assert::assertNotSame($request1, $request1->withCookieParams(['a' => 1]));
+        Assert::assertNotSame($request1, $request1->withQueryParams(['a' => '1']));
+        Assert::assertNotSame($request1, $request1->withCookieParams(['a' => '1']));
         Assert::assertNotSame($request1, $request1->withUploadedFiles([]));
         Assert::assertNotSame($request1, $request1->withParsedBody([]));
         Assert::assertNotSame($request1, $request1->withAttribute('a', 1));
