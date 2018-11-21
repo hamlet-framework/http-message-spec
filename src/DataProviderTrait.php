@@ -658,11 +658,14 @@ trait DataProviderTrait
     public function valid_query_params()
     {
         return [
-            [[]],
-            [['a' => '1']],
-            [['a' => ['1', '2', '3']]]
+            ['0='],
+            ['&&&&a=example'],
+            ['x=&y[]=2&y[xxx]=null&0=false'],
+            ['x=&y[]=2&y[xxx]=null&0=false&[1]=23'],
+            ['x=&y[][]=2&y[][1]=null&y[][][]=0&false=-1']
         ];
     }
+
 
     public function valid_cookie_params()
     {
