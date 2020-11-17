@@ -10,10 +10,9 @@ trait UriTestTrait
 {
     abstract protected function uri($value = ''): UriInterface;
 
-    // @todo change to something more elaborate
     public function test_uri_parsing()
     {
-        $uri = self::uri('https://user:pass@example.com:8080/path/123?q=abc#test');
+        $uri = $this->uri('https://user:pass@example.com:8080/path/123?q=abc#test');
 
         Assert::assertSame('https', $uri->getScheme());
         Assert::assertSame('user:pass@example.com:8080', $uri->getAuthority());
@@ -28,7 +27,7 @@ trait UriTestTrait
 
     public function test_set_and_retrieve_uri_components()
     {
-        $uri = self::uri()
+        $uri = $this->uri()
             ->withScheme('https')
             ->withUserInfo('user', 'pass')
             ->withHost('example.com')
@@ -54,7 +53,7 @@ trait UriTestTrait
      */
     public function test_valid_uris_forms_are_preserved(string $input)
     {
-        $uri = self::uri($input);
+        $uri = $this->uri($input);
         Assert::assertSame($input, (string) $uri);
     }
 
@@ -64,13 +63,13 @@ trait UriTestTrait
      */
     public function test_valid_schemes_are_accepted(string $scheme)
     {
-        $uri = self::uri()->withScheme($scheme);
+        $uri = $this->uri()->withScheme($scheme);
         Assert::assertSame($scheme, $uri->getScheme());
     }
 
     public function test_valid_ports_are_accepted()
     {
-        $uri = self::uri();
+        $uri = $this->uri();
         for ($i = 0; $i < 1000; $i++) {
             $port = rand(0x0001, 0xffff);
             $uri2 = $uri->withPort($port);
@@ -80,7 +79,7 @@ trait UriTestTrait
 
     public function test_recognize_falsey_uri_parts()
     {
-        $uri = self::uri('a://0:0@0/0?0#0');
+        $uri = $this->uri('a://0:0@0/0?0#0');
 
         Assert::assertSame('0:0@0', $uri->getAuthority());
         Assert::assertSame('0:0', $uri->getUserInfo());
@@ -93,7 +92,7 @@ trait UriTestTrait
 
     public function test_accepts_falsey_uri_parts()
     {
-        $uri = self::uri()
+        $uri = $this->uri()
             ->withScheme('a')
             ->withUserInfo('0', '0')
             ->withHost('0')
@@ -112,22 +111,22 @@ trait UriTestTrait
 
     public function test_scheme_is_normalized_to_lowercase()
     {
-        $uri = self::uri('HTTP://example.com');
+        $uri = $this->uri('HTTP://example.com');
         Assert::assertSame('http', $uri->getScheme());
         Assert::assertSame('http://example.com', (string)$uri);
 
-        $uri = self::uri('//example.com')->withScheme('HTTP');
+        $uri = $this->uri('//example.com')->withScheme('HTTP');
         Assert::assertSame('http', $uri->getScheme());
         Assert::assertSame('http://example.com', (string)$uri);
     }
 
     public function test_host_is_normalized_to_lowercase()
     {
-        $uri = self::uri('//eXaMpLe.CoM');
+        $uri = $this->uri('//eXaMpLe.CoM');
         Assert::assertSame('example.com', $uri->getHost());
         Assert::assertSame('//example.com', (string) $uri);
 
-        $uri = self::uri()->withHost('eXaMpLe.CoM');
+        $uri = $this->uri()->withHost('eXaMpLe.CoM');
         Assert::assertSame('example.com', $uri->getHost());
         Assert::assertSame('//example.com', (string) $uri);
     }
@@ -135,34 +134,34 @@ trait UriTestTrait
     public function test_port_is_null_for_standard_scheme_ports()
     {
         // HTTPS standard port
-        $uri = self::uri('https://example.com:443');
+        $uri = $this->uri('https://example.com:443');
         Assert::assertNull($uri->getPort());
         Assert::assertSame('example.com', $uri->getAuthority());
 
-        $uri = self::uri('https://example.com')->withPort(443);
+        $uri = $this->uri('https://example.com')->withPort(443);
         Assert::assertNull($uri->getPort());
         Assert::assertSame('example.com', $uri->getAuthority());
 
         // HTTP standard port
-        $uri = self::uri('http://example.com:80');
+        $uri = $this->uri('http://example.com:80');
         Assert::assertNull($uri->getPort());
         Assert::assertSame('example.com', $uri->getAuthority());
 
-        $uri = self::uri('http://example.com')->withPort(80);
+        $uri = $this->uri('http://example.com')->withPort(80);
         Assert::assertNull($uri->getPort());
         Assert::assertSame('example.com', $uri->getAuthority());
     }
 
     public function test_port_is_returned_if_scheme_unknown()
     {
-        $uri = self::uri('//example.com')->withPort(80);
+        $uri = $this->uri('//example.com')->withPort(80);
         Assert::assertSame(80, $uri->getPort());
         Assert::assertSame('example.com:80', $uri->getAuthority());
     }
 
     public function test_standard_port_resets_to_null_after_scheme_changes()
     {
-        $uri = self::uri('http://example.com:443');
+        $uri = $this->uri('http://example.com:443');
         Assert::assertSame('http', $uri->getScheme());
         Assert::assertSame(443, $uri->getPort());
         $uri = $uri->withScheme('https');
@@ -171,7 +170,7 @@ trait UriTestTrait
 
     public function test_standard_port_is_preserved_in_case_schema_changes()
     {
-        $uri = self::uri('https://example.com:443');
+        $uri = $this->uri('https://example.com:443');
         Assert::assertNull($uri->getPort());
 
         $uri = $uri->withScheme('http');
@@ -180,14 +179,14 @@ trait UriTestTrait
 
     public function test_port_can_be_removed()
     {
-        $uri = self::uri('http://example.com:8080')->withPort(null);
+        $uri = $this->uri('http://example.com:8080')->withPort(null);
         Assert::assertNull($uri->getPort());
         Assert::assertSame('http://example.com', (string)$uri);
     }
 
     public function test_default_return_values_of_getters()
     {
-        $uri = self::uri();
+        $uri = $this->uri();
 
         Assert::assertSame('', $uri->getScheme());
         Assert::assertSame('', $uri->getAuthority());
@@ -201,7 +200,7 @@ trait UriTestTrait
 
     public function test_immutability()
     {
-        $uri = self::uri();
+        $uri = $this->uri();
 
         Assert::assertNotSame($uri, $uri->withScheme('https'));
         Assert::assertNotSame($uri, $uri->withUserInfo('user', 'pass'));
@@ -214,7 +213,7 @@ trait UriTestTrait
 
     public function test_relative_uris_are_recognized()
     {
-        $uri = self::uri()->withPath('foo');
+        $uri = $this->uri()->withPath('foo');
         Assert::assertSame('foo', $uri->getPath());
         Assert::assertSame('foo', (string) $uri);
     }
@@ -229,7 +228,7 @@ trait UriTestTrait
      */
     public function test_uri_components_encoding(string $input, string $path, string $query, string $fragment, string $output)
     {
-        $uri = self::uri($input);
+        $uri = $this->uri($input);
 
         Assert::assertSame($path, $uri->getPath());
         Assert::assertSame($query, $uri->getQuery());
@@ -239,7 +238,7 @@ trait UriTestTrait
 
     public function test_with_fragment_encodes_value_properly()
     {
-        $uri = self::uri()->withFragment('#€?/b%61r');
+        $uri = $this->uri()->withFragment('#€?/b%61r');
         // A fragment starting with a "#" is valid and must not be magically removed. Otherwise it would be impossible to
         // construct such an URI. Also the "?" and "/" does not need to be encoded in the fragment.
         Assert::assertSame('%23%E2%82%AC?/b%61r', $uri->getFragment());
@@ -249,7 +248,7 @@ trait UriTestTrait
     public function test_adds_slash_for_relative_uri_string_with_host()
     {
         // If the path is rootless and an authority is present, the path MUST be prefixed by "/".
-        $uri = self::uri()->withPath('foo')->withHost('example.com');
+        $uri = $this->uri()->withPath('foo')->withHost('example.com');
         Assert::assertSame('foo', $uri->getPath());
 
         // concatenating a relative path with a host doesn't work: "//example.comfoo" would be wrong
@@ -260,7 +259,7 @@ trait UriTestTrait
     {
         // If the path is starting with more than one "/" and no authority is
         // present, the starting slashes MUST be reduced to one.
-        $uri = self::uri()->withPath('//foo');
+        $uri = $this->uri()->withPath('//foo');
         Assert::assertSame('//foo', $uri->getPath());
         // URI "//foo" would be interpreted as network reference and thus change the original path to the host
         Assert::assertSame('/foo', (string) $uri);
@@ -268,14 +267,14 @@ trait UriTestTrait
 
     public function test_authority_with_user_info_but_without_host()
     {
-        $uri = self::uri()->withUserInfo('user', 'pass');
+        $uri = $this->uri()->withUserInfo('user', 'pass');
         Assert::assertSame('user:pass', $uri->getUserInfo());
         Assert::assertSame('', $uri->getAuthority());
     }
 
     public function test_with_path_encodes_properly()
     {
-        $uri = self::uri()->withPath('/baz?#€/b%61r');
+        $uri = $this->uri()->withPath('/baz?#€/b%61r');
         // Query and fragment delimiters and multibyte chars are encoded.
         Assert::assertSame('/baz%3F%23%E2%82%AC/b%61r', $uri->getPath());
         Assert::assertSame('/baz%3F%23%E2%82%AC/b%61r', (string)$uri);
@@ -283,7 +282,7 @@ trait UriTestTrait
 
     public function test_with_query_encodes_properly()
     {
-        $uri = self::uri()->withQuery('?=#&€=/&b%61r');
+        $uri = $this->uri()->withQuery('?=#&€=/&b%61r');
         // A query starting with a "?" is valid and must not be magically removed. Otherwise it would be impossible to
         // construct such an URI. Also the "?" and "/" does not need to be encoded in the query.
         Assert::assertSame('?=%23&%E2%82%AC=/&b%61r', $uri->getQuery());
@@ -292,13 +291,13 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uris
-     * @param string $uri
+     * @param mixed $uri
      */
     public function test_invalid_uris_are_rejected($uri)
     {
         $this->expectException(InvalidArgumentException::class);
 
-        self::uri($uri);
+        $this->uri($uri);
     }
 
     /**
@@ -309,7 +308,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withScheme($scheme);
+        $uri = $this->uri()->withScheme($scheme);
         $uri->getScheme();
     }
 
@@ -322,7 +321,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withUserInfo($user, $password);
+        $uri = $this->uri()->withUserInfo($user, $password);
         $uri->getUserInfo();
     }
 
@@ -334,7 +333,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withHost($host);
+        $uri = $this->uri()->withHost($host);
         $uri->getHost();
     }
 
@@ -346,7 +345,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withPort($port);
+        $uri = $this->uri()->withPort($port);
         $uri->getPort();
     }
 
@@ -358,7 +357,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withPath($path);
+        $uri = $this->uri()->withPath($path);
         $uri->getPath();
     }
 
@@ -370,7 +369,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withQuery($query);
+        $uri = $this->uri()->withQuery($query);
         $uri->getQuery();
     }
 
@@ -382,7 +381,7 @@ trait UriTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $uri = self::uri()->withFragment($fragment);
+        $uri = $this->uri()->withFragment($fragment);
         $uri->getFragment();
     }
 }

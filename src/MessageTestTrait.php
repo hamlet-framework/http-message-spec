@@ -285,10 +285,10 @@ trait MessageTestTrait
 
     public function test_with_body_preserves_original_message()
     {
-        $body = self::stream();
+        $body = $this->stream();
         $message = $this->message()->withBody($body);
 
-        $message->withBody(self::stream());
+        $message->withBody($this->stream());
         Assert::assertSame($body, $message->getBody());
     }
 
@@ -300,7 +300,7 @@ trait MessageTestTrait
     public function test_header_values_are_trimmed()
     {
         $message1 = $this->message()->withHeader('OWS', " \t \tFoo\t \t ");
-        $message2 = $this->message()->withAddedHeader('OWS', " \t \tFoo\t \t ");;
+        $message2 = $this->message()->withAddedHeader('OWS', " \t \tFoo\t \t ");
         foreach ([$message1, $message2] as $message) {
             $this->assertSame(['OWS' => ['Foo']], $message->getHeaders());
             $this->assertSame('Foo', $message->getHeaderLine('OWS'));

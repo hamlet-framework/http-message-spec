@@ -18,6 +18,7 @@ trait StreamTestTrait
             return tempnam(sys_get_temp_dir(), 'psr-7') . '.' . md5(time() . random_bytes(12));
         } catch (Exception $e) {
             error_log($e->getMessage());
+            return '';
         }
     }
 
@@ -155,7 +156,7 @@ trait StreamTestTrait
 
         $stream = $this->stream($handle);
         Assert::assertSame($handle, $stream->detach());
-        Assert::assertInternalType('resource', $handle, 'Stream is not closed');
+        Assert::assertIsResource($handle);
         Assert::assertNull($stream->detach());
         $this->assert_stream_state_after_closed_or_detached($stream);
 
@@ -183,7 +184,7 @@ trait StreamTestTrait
         $throws = function (callable $fn) {
             try {
                 $fn();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return;
             }
             $this->fail('Exception should be thrown after the stream is detached.');
@@ -249,7 +250,7 @@ trait StreamTestTrait
             try {
                 $fn($stream);
                 $this->fail();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
             }
         };
         $throws(function (StreamInterface $stream) {

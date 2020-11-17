@@ -7,6 +7,7 @@ use PHPUnit\Framework\Assert;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
+use function fopen;
 
 trait UploadedFileTestTrait
 {
@@ -26,7 +27,7 @@ trait UploadedFileTestTrait
 
     public function test_setting_stream_returns_original_stream()
     {
-        $resource = \fopen('php://temp', 'r');
+        $resource = fopen('php://temp', 'r');
         $stream = $this->stream($resource);
 
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
@@ -119,7 +120,7 @@ trait UploadedFileTestTrait
      * @dataProvider file_upload_error_codes
      * @param int $code
      */
-    public function test_non_ok_error_code_raises_exception_on_get_stream($code)
+    public function test_non_ok_error_code_raises_exception_on_get_stream(int $code)
     {
         $this->expectException(RuntimeException::class);
 
@@ -133,7 +134,7 @@ trait UploadedFileTestTrait
      * @dataProvider file_upload_error_codes
      * @param int $code
      */
-    public function test_non_ok_error_code_raises_exception_on_move_to($code)
+    public function test_non_ok_error_code_raises_exception_on_move_to(int $code)
     {
         $this->expectException(RuntimeException::class);
 

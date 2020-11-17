@@ -12,7 +12,7 @@ trait ServerRequestTestTrait
 
     public function test_defaults()
     {
-        $request = self::serverRequest();
+        $request = $this->serverRequest();
 
         Assert::assertSame([], $request->getServerParams());
         Assert::assertSame([], $request->getQueryParams());
@@ -26,7 +26,7 @@ trait ServerRequestTestTrait
     {
         $value = rand(1, 1000);
 
-        $request1 = self::serverRequest()->withAttribute('name', null);
+        $request1 = $this->serverRequest()->withAttribute('name', null);
         Assert::assertNull($request1->getAttribute('name', $value));
 
         $request2 = $request1->withoutAttribute('name');
@@ -35,7 +35,7 @@ trait ServerRequestTestTrait
 
     public function test_can_add_and_remove_null_attribute()
     {
-        $request1 = self::serverRequest()->withAttribute('name', null);
+        $request1 = $this->serverRequest()->withAttribute('name', null);
         Assert::assertSame(['name' => null], $request1->getAttributes());
         Assert::assertNull($request1->getAttribute('name', 'different-default'));
 
@@ -45,14 +45,14 @@ trait ServerRequestTestTrait
 
     public function test_removing_non_existent_attribute_does_not_raise_exception()
     {
-        $request = self::serverRequest();
+        $request = $this->serverRequest();
         $request = $request->withoutAttribute('boo');
         Assert::assertSame([], $request->getAttributes());
     }
 
     public function test_immutability()
     {
-        $request1 = self::serverRequest();
+        $request1 = $this->serverRequest();
 
         Assert::assertNotSame($request1, $request1->withQueryParams(['a' => '1']));
         Assert::assertNotSame($request1, $request1->withCookieParams(['a' => '1']));
@@ -73,7 +73,7 @@ trait ServerRequestTestTrait
         $params = null;
         parse_str($value, $params);
 
-        $request = self::serverRequest()->withQueryParams($params);
+        $request = $this->serverRequest()->withQueryParams($params);
         Assert::assertSame($params, $request->getQueryParams());
     }
 
@@ -83,7 +83,7 @@ trait ServerRequestTestTrait
      */
     public function test_with_cookie_params_accepts_valid_values($value)
     {
-        $request = self::serverRequest()->withCookieParams($value);
+        $request = $this->serverRequest()->withCookieParams($value);
         Assert::assertSame($value, $request->getCookieParams());
     }
 
@@ -93,7 +93,7 @@ trait ServerRequestTestTrait
      */
     public function test_with_uploaded_files_accepts_valid_values($value)
     {
-        $request = self::serverRequest()->withUploadedFiles($value);
+        $request = $this->serverRequest()->withUploadedFiles($value);
         Assert::assertSame($value, $request->getUploadedFiles());
     }
 
@@ -103,7 +103,7 @@ trait ServerRequestTestTrait
      */
     public function test_with_parsed_body_accepts_valid_values($value)
     {
-        $request = self::serverRequest()->withParsedBody($value);
+        $request = $this->serverRequest()->withParsedBody($value);
         Assert::assertSame($value, $request->getParsedBody());
     }
 
@@ -114,7 +114,7 @@ trait ServerRequestTestTrait
      */
     public function test_with_attribute_accepts_valid_names_and_values($name, $value)
     {
-        $request = self::serverRequest()->withAttribute($name, $value);
+        $request = $this->serverRequest()->withAttribute($name, $value);
         Assert::assertSame($value, $request->getAttribute($name));
     }
 
@@ -127,7 +127,7 @@ trait ServerRequestTestTrait
     {
         $value = rand(1, 100);
 
-        $request = self::serverRequest()->withAttribute($name, $value);
+        $request = $this->serverRequest()->withAttribute($name, $value);
         Assert::assertSame([], $request->withoutAttribute($name)->getAttributes());
     }
 
@@ -139,7 +139,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withQueryParams($value);
+        $message = $this->serverRequest()->withQueryParams($value);
         $message->getQueryParams();
     }
 
@@ -151,7 +151,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withCookieParams($value);
+        $message = $this->serverRequest()->withCookieParams($value);
         $message->getCookieParams();
     }
 
@@ -163,7 +163,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withUploadedFiles($value);
+        $message = $this->serverRequest()->withUploadedFiles($value);
         $message->getUploadedFiles();
     }
 
@@ -175,7 +175,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withParsedBody($value);
+        $message = $this->serverRequest()->withParsedBody($value);
         $message->getParsedBody();
     }
 
@@ -188,7 +188,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withAttribute($name, $value);
+        $message = $this->serverRequest()->withAttribute($name, $value);
         $message->getAttributes();
     }
 
@@ -200,7 +200,7 @@ trait ServerRequestTestTrait
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $message = self::serverRequest()->withoutAttribute($name);
+        $message = $this->serverRequest()->withoutAttribute($name);
         $message->getAttributes();
     }
 }
