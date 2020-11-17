@@ -133,67 +133,73 @@ trait ServerRequestTestTrait
 
     /**
      * @dataProvider invalid_query_params
-     * @expectedException InvalidArgumentException
      * @param $value
      */
     public function test_with_query_params_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withQueryParams($value);
         $message->getQueryParams();
     }
 
     /**
      * @dataProvider invalid_cookie_params
-     * @expectedException InvalidArgumentException
      * @param $value
      */
     public function test_with_cookie_params_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withCookieParams($value);
         $message->getCookieParams();
     }
 
     /**
      * @dataProvider invalid_uploaded_files
-     * @expectedException InvalidArgumentException
      * @param $value
      */
     public function test_with_uploaded_files_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withUploadedFiles($value);
         $message->getUploadedFiles();
     }
 
     /**
      * @dataProvider invalid_parsed_bodies
-     * @expectedException InvalidArgumentException
      * @param $value
      */
     public function test_with_parsed_body_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withParsedBody($value);
         $message->getParsedBody();
     }
 
     /**
      * @dataProvider invalid_attribute_names_and_values
-     * @expectedException InvalidArgumentException
      * @param $name
      * @param $value
      */
     public function test_with_attribute_accepts_rejects_invalid_values($name, $value)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withAttribute($name, $value);
         $message->getAttributes();
     }
 
     /**
      * @dataProvider invalid_attribute_names_and_values
-     * @expectedException InvalidArgumentException
      * @param $name
      */
     public function test_without_attribute_rejects_invalid_values($name)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $message = self::serverRequest()->withoutAttribute($name);
         $message->getAttributes();
     }

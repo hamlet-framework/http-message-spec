@@ -31,7 +31,7 @@ trait StreamTestTrait
         Assert::assertTrue($stream->isWritable());
         Assert::assertTrue($stream->isSeekable());
         Assert::assertEquals('php://temp', $stream->getMetadata('uri'));
-        Assert::assertInternalType('array', $stream->getMetadata());
+        Assert::assertIsArray($stream->getMetadata());
         Assert::assertEquals(4, $stream->getSize());
         Assert::assertFalse($stream->eof());
 
@@ -48,7 +48,7 @@ trait StreamTestTrait
         Assert::assertTrue($stream->isWritable());
         Assert::assertTrue($stream->isSeekable());
         Assert::assertEquals('php://temp', $stream->getMetadata('uri'));
-        Assert::assertInternalType('array', $stream->getMetadata());
+        Assert::assertIsArray($stream->getMetadata());
         Assert::assertEquals(4, $stream->getSize());
         Assert::assertFalse($stream->eof());
 
@@ -218,11 +218,10 @@ trait StreamTestTrait
         $stream->close();
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function test_stream_reading_with_negative_length()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $handle = fopen('php://temp', 'r');
         $stream = $this->stream($handle);
         try {
@@ -339,11 +338,12 @@ trait StreamTestTrait
 
     /**
      * @dataProvider invalid_resources
-     * @expectedException InvalidArgumentException
      * @param mixed $handle
      */
     public function test_passing_invalid_stream_resource_to_constructor_raises_exception($handle)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->stream($handle);
     }
 
@@ -474,11 +474,10 @@ trait StreamTestTrait
         Assert::assertSame(0, $stream->tell());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_seek_raises_exception_when_stream_is_detached()
     {
+        $this->expectException(RuntimeException::class);
+
         $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
@@ -504,11 +503,10 @@ trait StreamTestTrait
         Assert::assertTrue($stream->isWritable());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_write_raises_exception_when_stream_is_detached()
     {
+        $this->expectException(RuntimeException::class);
+
         $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'wb+');
@@ -519,11 +517,12 @@ trait StreamTestTrait
 
     /**
      * @dataProvider non_writable_modes
-     * @expectedException RuntimeException
      * @param string $mode
      */
     public function test_write_raises_exception_when_stream_is_not_writable(string $mode)
     {
+        $this->expectException(RuntimeException::class);
+
         $handle = fopen('php://memory', $mode);
         $stream = $this->stream($handle);
         $stream->write('bar');
@@ -539,11 +538,10 @@ trait StreamTestTrait
         Assert::assertFalse($stream->isReadable());
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_read_raises_exception_when_stream_is_detached()
     {
+        $this->expectException(RuntimeException::class);
+
         $name = $this->tempFileName();
         file_put_contents($name, 'FOO BAR');
         $resource = fopen($name, 'r');
@@ -566,11 +564,12 @@ trait StreamTestTrait
 
     /**
      * @dataProvider non_readable_modes
-     * @expectedException RuntimeException
      * @param string $mode
      */
     public function test_get_contents_raises_exception_if_stream_is_not_readable(string $mode)
     {
+        $this->expectException(RuntimeException::class);
+
         $name = $this->tempFileName();
         if ($mode[0] != 'x') {
             file_put_contents($name, 'MODE: ' . $mode);

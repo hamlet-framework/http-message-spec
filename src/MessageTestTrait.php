@@ -26,11 +26,11 @@ trait MessageTestTrait
 
     /**
      * @dataProvider invalid_protocol_versions
-     * @expectedException InvalidArgumentException
      * @param mixed $version
      */
     public function test_with_invalid_protocol_version_raises_exception($version)
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->message()->withProtocolVersion($version)->getProtocolVersion();
     }
 
@@ -68,12 +68,12 @@ trait MessageTestTrait
 
     /**
      * @dataProvider invalid_header_names
-     * @expectedException InvalidArgumentException
      * @param $name
      * @throws Exception
      */
     public function test_invalid_header_name_raises_exception($name)
     {
+        $this->expectException(InvalidArgumentException::class);
         $value = base64_encode(random_bytes(12));
         $message = $this->message()->withAddedHeader($name, $value);
         $message->getHeaders();
@@ -81,12 +81,12 @@ trait MessageTestTrait
 
     /**
      * @dataProvider invalid_header_names
-     * @expectedException InvalidArgumentException
      * @param $name
      * @throws Exception
      */
     public function test_invalid_added_header_name_raises_exception($name)
     {
+        $this->expectException(InvalidArgumentException::class);
         $value = base64_encode(random_bytes(12));
         $message = $this->message()->withAddedHeader($name, $value);
         $message->getHeaders();
@@ -114,22 +114,22 @@ trait MessageTestTrait
 
     /**
      * @dataProvider invalid_header_values
-     * @expectedException InvalidArgumentException
      * @param mixed $value
      */
     public function test_with_header_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withHeader('header', $value);
         $message->getHeaders();
     }
 
     /**
      * @dataProvider invalid_header_values
-     * @expectedException InvalidArgumentException
      * @param mixed $value
      */
     public function test_with_added_header_rejects_invalid_values($value)
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withAddedHeader('header', $value);
         $message->getHeaders();
     }
@@ -219,20 +219,16 @@ trait MessageTestTrait
         Assert::assertEquals('example.net', $message->getHeaderLine('Host'));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function test_with_header_rejects_multiple_host_values()
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withHeader('Host', ['a.com', 'b.com']);
         $message->getHeaders();
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function test_with_added_header_rejects_multiple_host_values()
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withAddedHeader('Host', ['a.com', 'b.com']);
         $message->getHeaders();
     }
@@ -314,24 +310,24 @@ trait MessageTestTrait
 
     /**
      * @dataProvider headers_with_injection_vectors
-     * @expectedException InvalidArgumentException
      * @param $name
      * @param $value
      */
     public function test_with_header_rejects_headers_with_crlf_vectors($name, $value)
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withHeader($name, $value);
         $message->getHeaders();
     }
 
     /**
      * @dataProvider headers_with_injection_vectors
-     * @expectedException InvalidArgumentException
      * @param $name
      * @param $value
      */
     public function test_with_added_header_rejects_headers_with_crlf_vectors($name, $value)
     {
+        $this->expectException(InvalidArgumentException::class);
         $message = $this->message()->withAddedHeader($name, $value);
         $message->getHeaders();
     }

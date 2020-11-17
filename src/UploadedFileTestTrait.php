@@ -16,11 +16,11 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider invalid_file_upload_error_statuses
-     * @expectedException InvalidArgumentException
      * @param $status
      */
     public function test_setting_invalid_error_status_raises_exception($status)
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
@@ -59,11 +59,12 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider invalid_target_paths
-     * @expectedException InvalidArgumentException
      * @param $path
      */
     public function test_moving_to_invalid_path_raises_exception($path)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $resource = fopen('php://temp', 'wb+');
         $stream = $this->stream($resource);
         $stream->write('Foo bar!');
@@ -72,11 +73,10 @@ trait UploadedFileTestTrait
         $upload->moveTo($path);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_move_cannot_be_called_more_than_once()
     {
+        $this->expectException(RuntimeException::class);
+
         $resource = fopen('php://temp', 'wb+');
         $stream = $this->stream($resource);
         $stream->write('Foo bar!');
@@ -88,11 +88,10 @@ trait UploadedFileTestTrait
         $upload->moveTo($to);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function test_cannot_retrieve_stream_after_move()
     {
+        $this->expectException(RuntimeException::class);
+
         $stream = $this->stream(fopen('php://temp', 'wb+'));
         $stream->write('Foo bar!');
 
@@ -118,11 +117,12 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider file_upload_error_codes
-     * @expectedException RuntimeException
      * @param int $code
      */
     public function test_non_ok_error_code_raises_exception_on_get_stream($code)
     {
+        $this->expectException(RuntimeException::class);
+
         $source = tempnam(sys_get_temp_dir(), 'source');
 
         $uploadedFile = $this->uploadedFile($source, 100, $code);
@@ -131,11 +131,12 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider file_upload_error_codes
-     * @expectedException RuntimeException
      * @param int $code
      */
     public function test_non_ok_error_code_raises_exception_on_move_to($code)
     {
+        $this->expectException(RuntimeException::class);
+
         $source = tempnam(sys_get_temp_dir(), 'source');
 
         $uploadedFile = $this->uploadedFile($source, 100, $code);
@@ -144,21 +145,23 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider invalid_file_sizes
-     * @expectedException InvalidArgumentException
      * @param $size
      */
     public function test_setting_invalid_file_size_raises_exception($size)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->uploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
     }
 
     /**
      * @dataProvider invalid_file_names
-     * @expectedException InvalidArgumentException
      * @param $fileName
      */
     public function test_invalid_client_file_names_raise_an_exception($fileName)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $fileName);
     }
 
@@ -174,11 +177,12 @@ trait UploadedFileTestTrait
 
     /**
      * @dataProvider invalid_media_types
-     * @expectedException InvalidArgumentException
      * @param $mediaType
      */
     public function test_invalid_client_media_type_raise_an_exception($mediaType)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
 }

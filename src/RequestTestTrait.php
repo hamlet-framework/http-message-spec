@@ -50,11 +50,12 @@ trait RequestTestTrait
 
     /**
      * @dataProvider invalid_request_targets
-     * @expectedException InvalidArgumentException
      * @param mixed $target
      */
     public function test_with_request_target_rejects_invalid_request_targets($target)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $request = self::request()->withRequestTarget($target);
         $request->getRequestTarget();
     }
@@ -134,10 +135,11 @@ trait RequestTestTrait
     /**
      * @dataProvider invalid_request_methods
      * @param $method
-     * @expectedException InvalidArgumentException
      */
     public function test_with_method_rejects_invalid_method_names($method)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $request = self::request()->withMethod($method);
         $request->getMethod();
     }

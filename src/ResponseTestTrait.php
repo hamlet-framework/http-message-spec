@@ -58,11 +58,12 @@ trait ResponseTestTrait
 
     /**
      * @dataProvider invalid_reason_phrases
-     * @expectedException InvalidArgumentException
      * @param $phrase
      */
     public function test_with_status_rejects_invalid_reason_phrases($phrase)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $response = $this->response()->withStatus(422, $phrase);
         $response->getStatusCode();
         $response->getReasonPhrase();
@@ -75,17 +76,18 @@ trait ResponseTestTrait
             $response = $this->response()->withStatus($code);
             $result = $response->getStatusCode();
             Assert::assertSame((int)$code, $result);
-            Assert::assertInternalType('int', $result);
+            Assert::assertIsInt($result);
         }
     }
 
     /**
      * @dataProvider invalid_status_codes
-     * @expectedException InvalidArgumentException
      * @param $code
      */
     public function test_with_status_rejects_invalid_codes($code)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $response = $this->response()->withStatus($code);
         $response->getStatusCode();
     }
@@ -94,7 +96,7 @@ trait ResponseTestTrait
     {
         $response = $this->response()->withStatus(555);
 
-        Assert::assertInternalType('string', $response->getReasonPhrase());
+        Assert::assertIsString($response->getReasonPhrase());
         Assert::assertEmpty($response->getReasonPhrase());
     }
 }

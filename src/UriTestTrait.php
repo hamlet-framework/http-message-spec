@@ -293,20 +293,22 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uris
      * @param string $uri
-     * @expectedException InvalidArgumentException
      */
     public function test_invalid_uris_are_rejected($uri)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         self::uri($uri);
     }
 
     /**
      * @dataProvider invalid_uri_schemes
      * @param mixed $scheme
-     * @expectedException InvalidArgumentException
      */
     public function test_with_scheme_rejects_invalid_values($scheme)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withScheme($scheme);
         $uri->getScheme();
     }
@@ -315,10 +317,11 @@ trait UriTestTrait
      * @dataProvider invalid_uri_user_infos
      * @param mixed $user
      * @param mixed $password
-     * @expectedException InvalidArgumentException
      */
     public function test_with_user_info_rejects_invalid_values($user, $password)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withUserInfo($user, $password);
         $uri->getUserInfo();
     }
@@ -326,10 +329,11 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uri_hosts
      * @param mixed $host
-     * @expectedException InvalidArgumentException
      */
     public function test_with_host_rejects_invalid_values($host)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withHost($host);
         $uri->getHost();
     }
@@ -337,10 +341,11 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uri_ports
      * @param mixed $port
-     * @expectedException InvalidArgumentException
      */
     public function test_with_port_rejects_invalid_values($port)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withPort($port);
         $uri->getPort();
     }
@@ -348,10 +353,11 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uri_paths
      * @param mixed $path
-     * @expectedException InvalidArgumentException
      */
     public function test_with_path_rejects_invalid_values($path)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withPath($path);
         $uri->getPath();
     }
@@ -359,10 +365,11 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uri_queries
      * @param mixed $query
-     * @expectedException InvalidArgumentException
      */
     public function test_with_query_rejects_invalid_values($query)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withQuery($query);
         $uri->getQuery();
     }
@@ -370,10 +377,11 @@ trait UriTestTrait
     /**
      * @dataProvider invalid_uri_fragments
      * @param mixed $fragment
-     * @expectedException InvalidArgumentException
      */
     public function test_with_fragment_rejects_invalid_values($fragment)
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $uri = self::uri()->withFragment($fragment);
         $uri->getFragment();
     }
