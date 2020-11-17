@@ -15,9 +15,6 @@ $generators = [
     'ring-central' => function (): ServerRequestInterface {
         return new \RingCentral\Psr7\ServerRequest('GET', '');
     },
-    'slim' => function (): ServerRequestInterface {
-        return new \Slim\Http\Request('GET', \Slim\Http\Uri::createFromString(''), new \Slim\Http\Headers, [], [], \RingCentral\Psr7\stream_for());
-    },
     'wind-walker' => function (): ServerRequestInterface {
         return new Windwalker\Http\Request\ServerRequest();
     },
@@ -27,6 +24,9 @@ $generators = [
     'hamlet-framework' => function (): ServerRequestInterface {
         return \Hamlet\Http\Message\ServerRequest::empty();
     },
+    'http-soft' => function (): ServerRequestInterface {
+        return new \HttpSoft\Message\ServerRequest();
+    }
 ];
 
 echo 'Comprehensive test' . PHP_EOL;
