@@ -3,3 +3,4 @@ vendor/
 composer.lock
 .phpunit.result.cache
 tests/foo-bar-baz
+scripts/phpunit.results.cache
