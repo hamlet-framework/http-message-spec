@@ -138,7 +138,15 @@ trait DataProviderTrait
             [null],
             ['hey dude'],
             ['Location:'],
-            ['This-is-a-cyrillic-о']
+            ['This-is-a-cyrillic-о'],
+            ["va\nlue"],
+            ["va\rlue"],
+            ["va\r\nlue"],
+            ["va\n\rlue"],
+            [true],
+            [new stdClass()],
+            [function () {}],
+            [[]],
         ];
     }
 
@@ -158,7 +166,11 @@ trait DataProviderTrait
         return [
             ["package http\r\nH: 0 0\r\n\r\n"],
             [null],
-            [new stdClass()]
+            [true],
+            [false],
+            [[]],
+            [new stdClass()],
+            [function () {}],
         ];
     }
 
@@ -180,7 +192,9 @@ trait DataProviderTrait
             'with-space'   => ['foo bar baz'],
             'invalid-type' => [12],
             'null'         => [null],
-            'object'       => [new stdClass()]
+            'object'       => [new stdClass()],
+            'newline'      => ["request\ntarget"],
+            'tab'          => ["request\ttarget"],
         ];
     }
 
