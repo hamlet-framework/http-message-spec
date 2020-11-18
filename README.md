@@ -1,5 +1,60 @@
 Hamlet Framework / HTTP / Message / Specification
 
+Test case collection for PSR-7.
+
+## How to use
+
+```
+"require-dev": {
+    ...
+    "hamlet-framework/http-message-spec": "@stable",
+    ...
+}
+```
+
+If you'd like to test your implementation of `Psr\Http\Message\RequestInterface` create a test case and import the following three traits:
+
+```
+class MyRequestTest extends TestCase
+{
+    use DataProviderTrait;
+    use MessageTestTrait;
+    use RequestTestTrait;
+
+    ...
+}
+```
+
+After that you'll have to implement 4 abstract factory methods returning your implementations of PSR-7 interfaces:
+
+```
+class MyRequestTest extends TestCase
+{
+    ...
+    
+    protected function request(): RequestInterface
+    {
+        return new MyRequest('GET', new Uri());
+    }
+
+    protected function message(): MessageInterface
+    {
+        return $this->request();
+    }
+
+    protected function stream(): StreamInterface
+    {
+        return MyStream();
+    }
+
+    protected function uri(string $value): UriInterface
+    {
+        return new MyUri($value);
+    }
+```
+
+You can now run your tests.
+
 ## Benchmark results:
 
 Comprehensive test
