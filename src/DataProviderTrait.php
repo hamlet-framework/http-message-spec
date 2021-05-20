@@ -703,7 +703,7 @@ trait DataProviderTrait
     public function valid_uploaded_files(): array
     {
         return [
-            [[]]
+            [[]],
         ];
     }
 

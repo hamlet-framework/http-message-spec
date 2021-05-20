@@ -1,6 +1,6 @@
 <?php
 
-$cache = __DIR__ . '/phpunit.results.cache';
+$cache = __DIR__ . '/../.phpunit.results.cache';
 if (!file_exists($cache)) {
     $content = shell_exec('./vendor/bin/phpunit --coverage-text');
     file_put_contents($cache, $content);

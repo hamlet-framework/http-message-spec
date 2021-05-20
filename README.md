@@ -60,41 +60,41 @@ You can now run your tests.
 Comprehensive test
 
     +----------------------+--------------------+-------------------+--------------+
-    |                      | Execution time (s) | Memory usage (mb) | Times faster |
+    | Function description | Execution time (s) | Memory usage (mb) | Times faster |
     +----------------------+--------------------+-------------------+--------------+
-    | ring-central         | 3.8642             | 0.0970            | 26%          |
-    | nyholm               | 4.8724             | 0.1470            | 6%           |
-    | guzzle               | 5.1948             | 0.3000            | 22%          |
-    | hamlet-framework     | 6.3398             | 0.3160            | 40%          |
-    | http-soft            | 8.9373             | 0.1530            | 6%           |
-    | zend-diactoros       | 9.5347             | 0.1780            | 18%          |
-    | wind-walker          | 11.2797            | 0.3440            | 0            |
+    | nyholm               | 2.1266             | 0.1440            | 10%          |
+    | http-soft            | 2.3589             | 0.1200            | 8%           |
+    | guzzle               | 2.5607             | 0.2390            | 16%          |
+    | hamlet-framework     | 2.9768             | 0.3200            | 10%          |
+    | ring-central         | 3.2848             | 0.0950            | 59%          |
+    | zend-diactoros       | 5.2493             | 0.1790            | 16%          |
+    | wind-walker          | 6.1238             | 0.3290            | 0            |
     +----------------------+--------------------+-------------------+--------------+
 
 Fetching test
 
     +----------------------+--------------------+-------------------+--------------+
-    |                      | Execution time (s) | Memory usage (mb) | Times faster |
+    | Function description | Execution time (s) | Memory usage (mb) | Times faster |
     +----------------------+--------------------+-------------------+--------------+
-    | hamlet-framework     | 1.8248             | 0.0000            | 22%          |
-    | ring-central         | 2.2316             | 0.0000            | 7%           |
-    | nyholm               | 2.4092             | 0.0000            | 6%           |
-    | guzzle               | 2.5592             | 0.0000            | 36%          |
-    | zend-diactoros       | 3.4990             | 0.0010            | 19%          |
-    | wind-walker          | 4.1907             | 0.0010            | 0%           |
-    | http-soft            | 4.1972             | 0.0000            | 0            |
+    | hamlet-framework     | 0.8523             | 0.0000            | 15%          |
+    | nyholm               | 0.9859             | 0.0010            | 1%           |
+    | ring-central         | 1.0014             | 0.0010            | 7%           |
+    | guzzle               | 1.0766             | 0.0000            | 28%          |
+    | http-soft            | 1.3821             | 0.0000            | 34%          |
+    | zend-diactoros       | 1.8600             | 0.0000            | 5%           |
+    | wind-walker          | 1.9627             | 0.0000            | 0            |
     +----------------------+--------------------+-------------------+--------------+
 
 ## Total number of test failures:
 
     +-----------------+-------+
     | Hamlet          |     0 |
-    | Nyholm          |   193 |
+    | Nyholm          |   192 |
     | WindWalker      |   244 |
-    | Guzzle          |   329 |
-    | RingCentral     |   434 |
-    | HttpSoft        |   439 |
-    | ZendDiactoros   |   459 |
+    | Guzzle          |   328 |
+    | HttpSoft        |   435 |
+    | RingCentral     |   435 |
+    | ZendDiactoros   |   542 |
     | Slim            |  1387 |
     +-----------------+-------+
 
@@ -104,3 +104,4 @@ Fetching test
 - Add more tests to URI from other projects
 - Add tests from https://mathiasbynens.be/demo/url-regex
 - Add tests from https://url.spec.whatwg.org/#parsing
+- Add test for withUploadedFiles (the test cases are a bit thin at the moment)

@@ -2,6 +2,7 @@
 
 namespace Hamlet\Http\Message;
 
+use GuzzleHttp\Psr7\Utils;
 use function GuzzleHttp\Psr7\stream_for;
 use GuzzleHttp\Psr7\UploadedFile;
 use Hamlet\Http\Message\Spec\Traits\DataProviderTrait;
@@ -17,10 +18,9 @@ class GuzzleUploadedFileTest extends TestCase
 
     protected function stream($data): StreamInterface
     {
-        return stream_for($data);
+        return Utils::streamFor($data);
     }
-
-    protected function uploadedFile($streamOrResource, int $size, int $error, ?string $clientFileName = null, ?string $clientMediaType = null): UploadedFileInterface
+    protected function uploadedFile($streamOrResource, $size, $error, $clientFileName = null, $clientMediaType = null): UploadedFileInterface
     {
         return new UploadedFile($streamOrResource, $size, $error, $clientFileName, $clientMediaType);
     }

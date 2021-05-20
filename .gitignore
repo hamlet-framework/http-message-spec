@@ -1,6 +1,5 @@
 .idea/
 vendor/
 composer.lock
-.phpunit.result.cache
-tests/foo-bar-baz
-scripts/phpunit.results.cache
+foo-bar-baz
+.phpunit.results.cache

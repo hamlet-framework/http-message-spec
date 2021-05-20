@@ -18,7 +18,7 @@ class HttpSoftUploadedFileTest extends TestCase
         return new \HttpSoft\Message\Stream($data);
     }
 
-    protected function uploadedFile($streamOrResource, int $size, int $error, ?string $clientFileName = null, ?string $clientMediaType = null): UploadedFileInterface
+    protected function uploadedFile($streamOrResource, $size, $error, $clientFileName = null, $clientMediaType = null): UploadedFileInterface
     {
         return new \HttpSoft\Message\UploadedFile($streamOrResource, $size, $error, $clientFileName, $clientMediaType);
     }
