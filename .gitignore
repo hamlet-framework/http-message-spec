@@ -2,4 +2,5 @@
 vendor/
 composer.lock
 foo-bar-baz
+.phpunit.result.cache
 .phpunit.results.cache
