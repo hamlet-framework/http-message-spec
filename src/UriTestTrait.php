@@ -3,29 +3,34 @@
 namespace Hamlet\Http\Message\Spec\Traits;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\Assert;
 use Psr\Http\Message\UriInterface;
 
 trait UriTestTrait
 {
     abstract protected function uri($value = ''): UriInterface;
 
-    public function test_uri_parsing()
+    /**
+     * @noinspection DuplicatedCode
+     */
+    public function test_uri_parsing(): void
     {
         $uri = $this->uri('https://user:pass@example.com:8080/path/123?q=abc#test');
 
-        Assert::assertSame('https', $uri->getScheme());
-        Assert::assertSame('user:pass@example.com:8080', $uri->getAuthority());
-        Assert::assertSame('user:pass', $uri->getUserInfo());
-        Assert::assertSame('example.com', $uri->getHost());
-        Assert::assertSame(8080, $uri->getPort());
-        Assert::assertSame('/path/123', $uri->getPath());
-        Assert::assertSame('q=abc', $uri->getQuery());
-        Assert::assertSame('test', $uri->getFragment());
-        Assert::assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $uri);
+        $this->assertSame('https', $uri->getScheme());
+        $this->assertSame('user:pass@example.com:8080', $uri->getAuthority());
+        $this->assertSame('user:pass', $uri->getUserInfo());
+        $this->assertSame('example.com', $uri->getHost());
+        $this->assertSame(8080, $uri->getPort());
+        $this->assertSame('/path/123', $uri->getPath());
+        $this->assertSame('q=abc', $uri->getQuery());
+        $this->assertSame('test', $uri->getFragment());
+        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $uri);
     }
 
-    public function test_set_and_retrieve_uri_components()
+    /**
+     * @noinspection DuplicatedCode
+     */
+    public function test_set_and_retrieve_uri_components(): void
     {
         $uri = $this->uri()
             ->withScheme('https')
@@ -36,61 +41,65 @@ trait UriTestTrait
             ->withQuery('q=abc')
             ->withFragment('test');
 
-        Assert::assertSame('https', $uri->getScheme());
-        Assert::assertSame('user:pass@example.com:8080', $uri->getAuthority());
-        Assert::assertSame('user:pass', $uri->getUserInfo());
-        Assert::assertSame('example.com', $uri->getHost());
-        Assert::assertSame(8080, $uri->getPort());
-        Assert::assertSame('/path/123', $uri->getPath());
-        Assert::assertSame('q=abc', $uri->getQuery());
-        Assert::assertSame('test', $uri->getFragment());
-        Assert::assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string)$uri);
+        $this->assertSame('https', $uri->getScheme());
+        $this->assertSame('user:pass@example.com:8080', $uri->getAuthority());
+        $this->assertSame('user:pass', $uri->getUserInfo());
+        $this->assertSame('example.com', $uri->getHost());
+        $this->assertSame(8080, $uri->getPort());
+        $this->assertSame('/path/123', $uri->getPath());
+        $this->assertSame('q=abc', $uri->getQuery());
+        $this->assertSame('test', $uri->getFragment());
+        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string)$uri);
     }
 
     /**
      * @dataProvider valid_uris
-     * @param string $input
      */
-    public function test_valid_uris_forms_are_preserved(string $input)
+    public function test_valid_uris_forms_are_preserved(string $input): void
     {
         $uri = $this->uri($input);
-        Assert::assertSame($input, (string) $uri);
+        $this->assertSame($input, (string) $uri);
     }
 
     /**
      * @dataProvider valid_uri_schemes
-     * @param string $scheme
      */
-    public function test_valid_schemes_are_accepted(string $scheme)
+    public function test_valid_schemes_are_accepted(string $scheme): void
     {
         $uri = $this->uri()->withScheme($scheme);
-        Assert::assertSame($scheme, $uri->getScheme());
+        $this->assertSame($scheme, $uri->getScheme());
     }
 
-    public function test_valid_ports_are_accepted()
+    public function test_valid_ports_are_accepted(): void
     {
         $uri = $this->uri();
         for ($i = 0; $i < 1000; $i++) {
             $port = rand(0x0001, 0xffff);
             $uri2 = $uri->withPort($port);
-            Assert::assertEquals($port, $uri2->getPort());
+            $this->assertEquals($port, $uri2->getPort());
         }
     }
 
-    public function test_recognize_falsey_uri_parts()
+    /**
+     * @noinspection DuplicatedCode
+     */
+    public function test_recognize_falsey_uri_parts(): void
     {
         $uri = $this->uri('a://0:0@0/0?0#0');
 
-        Assert::assertSame('0:0@0', $uri->getAuthority());
-        Assert::assertSame('0:0', $uri->getUserInfo());
-        Assert::assertSame('0', $uri->getHost());
-        Assert::assertSame('/0', $uri->getPath());
-        Assert::assertSame('0', $uri->getQuery());
-        Assert::assertSame('0', $uri->getFragment());
-        Assert::assertSame('a://0:0@0/0?0#0', (string)$uri);
+        $this->assertSame('0:0@0', $uri->getAuthority());
+        $this->assertSame('0:0', $uri->getUserInfo());
+        $this->assertSame('0', $uri->getHost());
+        $this->assertSame('/0', $uri->getPath());
+        $this->assertSame('0', $uri->getQuery());
+        $this->assertSame('0', $uri->getFragment());
+        $this->assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
-    public function test_accepts_falsey_uri_parts()
+    /**
+     * @noinspection DuplicatedCode
+     */
+    public function test_accepts_falsey_uri_parts(): void
     {
         $uri = $this->uri()
             ->withScheme('a')
@@ -100,200 +109,206 @@ trait UriTestTrait
             ->withQuery('0')
             ->withFragment('0');
 
-        Assert::assertSame('0:0@0', $uri->getAuthority());
-        Assert::assertSame('0:0', $uri->getUserInfo());
-        Assert::assertSame('0', $uri->getHost());
-        Assert::assertSame('/0', $uri->getPath());
-        Assert::assertSame('0', $uri->getQuery());
-        Assert::assertSame('0', $uri->getFragment());
-        Assert::assertSame('a://0:0@0/0?0#0', (string)$uri);
+        $this->assertSame('0:0@0', $uri->getAuthority());
+        $this->assertSame('0:0', $uri->getUserInfo());
+        $this->assertSame('0', $uri->getHost());
+        $this->assertSame('/0', $uri->getPath());
+        $this->assertSame('0', $uri->getQuery());
+        $this->assertSame('0', $uri->getFragment());
+        $this->assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
-    public function test_scheme_is_normalized_to_lowercase()
+    /**
+     * @noinspection HttpUrlsUsage
+     */
+    public function test_scheme_is_normalized_to_lowercase(): void
     {
         $uri = $this->uri('HTTP://example.com');
-        Assert::assertSame('http', $uri->getScheme());
-        Assert::assertSame('http://example.com', (string)$uri);
+        $this->assertSame('http', $uri->getScheme());
+        $this->assertSame('http://example.com', (string)$uri);
 
         $uri = $this->uri('//example.com')->withScheme('HTTP');
-        Assert::assertSame('http', $uri->getScheme());
-        Assert::assertSame('http://example.com', (string)$uri);
+        $this->assertSame('http', $uri->getScheme());
+        $this->assertSame('http://example.com', (string)$uri);
     }
 
-    public function test_host_is_normalized_to_lowercase()
+    public function test_host_is_normalized_to_lowercase(): void
     {
         $uri = $this->uri('//eXaMpLe.CoM');
-        Assert::assertSame('example.com', $uri->getHost());
-        Assert::assertSame('//example.com', (string) $uri);
+        $this->assertSame('example.com', $uri->getHost());
+        $this->assertSame('//example.com', (string) $uri);
 
         $uri = $this->uri()->withHost('eXaMpLe.CoM');
-        Assert::assertSame('example.com', $uri->getHost());
-        Assert::assertSame('//example.com', (string) $uri);
+        $this->assertSame('example.com', $uri->getHost());
+        $this->assertSame('//example.com', (string) $uri);
     }
 
-    public function test_port_is_null_for_standard_scheme_ports()
+    /**
+     * @noinspection HttpUrlsUsage
+     */
+    public function test_port_is_null_for_standard_scheme_ports(): void
     {
         // HTTPS standard port
         $uri = $this->uri('https://example.com:443');
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('example.com', $uri->getAuthority());
+        $this->assertNull($uri->getPort());
+        $this->assertSame('example.com', $uri->getAuthority());
 
         $uri = $this->uri('https://example.com')->withPort(443);
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('example.com', $uri->getAuthority());
+        $this->assertNull($uri->getPort());
+        $this->assertSame('example.com', $uri->getAuthority());
 
         // HTTP standard port
         $uri = $this->uri('http://example.com:80');
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('example.com', $uri->getAuthority());
+        $this->assertNull($uri->getPort());
+        $this->assertSame('example.com', $uri->getAuthority());
 
         $uri = $this->uri('http://example.com')->withPort(80);
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('example.com', $uri->getAuthority());
+        $this->assertNull($uri->getPort());
+        $this->assertSame('example.com', $uri->getAuthority());
     }
 
-    public function test_port_is_returned_if_scheme_unknown()
+    public function test_port_is_returned_if_scheme_unknown(): void
     {
         $uri = $this->uri('//example.com')->withPort(80);
-        Assert::assertSame(80, $uri->getPort());
-        Assert::assertSame('example.com:80', $uri->getAuthority());
+        $this->assertSame(80, $uri->getPort());
+        $this->assertSame('example.com:80', $uri->getAuthority());
     }
 
-    public function test_standard_port_resets_to_null_after_scheme_changes()
+    /**
+     * @noinspection HttpUrlsUsage
+     */
+    public function test_standard_port_resets_to_null_after_scheme_changes(): void
     {
         $uri = $this->uri('http://example.com:443');
-        Assert::assertSame('http', $uri->getScheme());
-        Assert::assertSame(443, $uri->getPort());
+        $this->assertSame('http', $uri->getScheme());
+        $this->assertSame(443, $uri->getPort());
         $uri = $uri->withScheme('https');
-        Assert::assertNull($uri->getPort());
+        $this->assertNull($uri->getPort());
     }
 
-    public function test_standard_port_is_preserved_in_case_schema_changes()
+    public function test_standard_port_is_preserved_in_case_schema_changes(): void
     {
         $uri = $this->uri('https://example.com:443');
-        Assert::assertNull($uri->getPort());
+        $this->assertNull($uri->getPort());
 
         $uri = $uri->withScheme('http');
-        Assert::assertEquals(443, $uri->getPort());
+        $this->assertEquals(443, $uri->getPort());
     }
 
-    public function test_port_can_be_removed()
+    /**
+     * @noinspection HttpUrlsUsage
+     */
+    public function test_port_can_be_removed(): void
     {
         $uri = $this->uri('http://example.com:8080')->withPort(null);
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('http://example.com', (string)$uri);
+        $this->assertNull($uri->getPort());
+        $this->assertSame('http://example.com', (string)$uri);
     }
 
-    public function test_default_return_values_of_getters()
+    public function test_default_return_values_of_getters(): void
     {
         $uri = $this->uri();
 
-        Assert::assertSame('', $uri->getScheme());
-        Assert::assertSame('', $uri->getAuthority());
-        Assert::assertSame('', $uri->getUserInfo());
-        Assert::assertSame('', $uri->getHost());
-        Assert::assertNull($uri->getPort());
-        Assert::assertSame('', $uri->getPath());
-        Assert::assertSame('', $uri->getQuery());
-        Assert::assertSame('', $uri->getFragment());
+        $this->assertSame('', $uri->getScheme());
+        $this->assertSame('', $uri->getAuthority());
+        $this->assertSame('', $uri->getUserInfo());
+        $this->assertSame('', $uri->getHost());
+        $this->assertNull($uri->getPort());
+        $this->assertSame('', $uri->getPath());
+        $this->assertSame('', $uri->getQuery());
+        $this->assertSame('', $uri->getFragment());
     }
 
-    public function test_immutability()
+    public function test_immutability(): void
     {
         $uri = $this->uri();
 
-        Assert::assertNotSame($uri, $uri->withScheme('https'));
-        Assert::assertNotSame($uri, $uri->withUserInfo('user', 'pass'));
-        Assert::assertNotSame($uri, $uri->withHost('example.com'));
-        Assert::assertNotSame($uri, $uri->withPort(8080));
-        Assert::assertNotSame($uri, $uri->withPath('/path/123'));
-        Assert::assertNotSame($uri, $uri->withQuery('q=abc'));
-        Assert::assertNotSame($uri, $uri->withFragment('test'));
+        $this->assertNotSame($uri, $uri->withScheme('https'));
+        $this->assertNotSame($uri, $uri->withUserInfo('user', 'pass'));
+        $this->assertNotSame($uri, $uri->withHost('example.com'));
+        $this->assertNotSame($uri, $uri->withPort(8080));
+        $this->assertNotSame($uri, $uri->withPath('/path/123'));
+        $this->assertNotSame($uri, $uri->withQuery('q=abc'));
+        $this->assertNotSame($uri, $uri->withFragment('test'));
     }
 
-    public function test_relative_uris_are_recognized()
+    public function test_relative_uris_are_recognized(): void
     {
         $uri = $this->uri()->withPath('foo');
-        Assert::assertSame('foo', $uri->getPath());
-        Assert::assertSame('foo', (string) $uri);
+        $this->assertSame('foo', $uri->getPath());
+        $this->assertSame('foo', (string) $uri);
     }
 
     /**
      * @dataProvider uri_components
-     * @param string $input
-     * @param string $path
-     * @param string $query
-     * @param string $fragment
-     * @param string $output
      */
-    public function test_uri_components_encoding(string $input, string $path, string $query, string $fragment, string $output)
+    public function test_uri_components_encoding(string $input, string $path, string $query, string $fragment, string $output): void
     {
         $uri = $this->uri($input);
 
-        Assert::assertSame($path, $uri->getPath());
-        Assert::assertSame($query, $uri->getQuery());
-        Assert::assertSame($fragment, $uri->getFragment());
-        Assert::assertSame($output, (string)$uri);
+        $this->assertSame($path, $uri->getPath());
+        $this->assertSame($query, $uri->getQuery());
+        $this->assertSame($fragment, $uri->getFragment());
+        $this->assertSame($output, (string)$uri);
     }
 
-    public function test_with_fragment_encodes_value_properly()
+    public function test_with_fragment_encodes_value_properly(): void
     {
         $uri = $this->uri()->withFragment('#€?/b%61r');
-        // A fragment starting with a "#" is valid and must not be magically removed. Otherwise it would be impossible to
-        // construct such an URI. Also the "?" and "/" does not need to be encoded in the fragment.
-        Assert::assertSame('%23%E2%82%AC?/b%61r', $uri->getFragment());
-        Assert::assertSame('#%23%E2%82%AC?/b%61r', (string)$uri);
+        // A fragment starting with a "#" is valid and must not be magically removed. Otherwise, it would be impossible to
+        // construct such a URI. Also the "?" and "/" does not need to be encoded in the fragment.
+        $this->assertSame('%23%E2%82%AC?/b%61r', $uri->getFragment());
+        $this->assertSame('#%23%E2%82%AC?/b%61r', (string)$uri);
     }
 
-    public function test_adds_slash_for_relative_uri_string_with_host()
+    public function test_adds_slash_for_relative_uri_string_with_host(): void
     {
         // If the path is rootless and an authority is present, the path MUST be prefixed by "/".
         $uri = $this->uri()->withPath('foo')->withHost('example.com');
-        Assert::assertSame('foo', $uri->getPath());
+        $this->assertSame('foo', $uri->getPath());
 
         // concatenating a relative path with a host doesn't work: "//example.comfoo" would be wrong
-        Assert::assertSame('//example.com/foo', (string) $uri);
+        $this->assertSame('//example.com/foo', (string) $uri);
     }
 
-    public function test_remove_extra_slashes_without_host()
+    public function test_remove_extra_slashes_without_host(): void
     {
         // If the path is starting with more than one "/" and no authority is
         // present, the starting slashes MUST be reduced to one.
         $uri = $this->uri()->withPath('//foo');
-        Assert::assertSame('//foo', $uri->getPath());
+        $this->assertSame('//foo', $uri->getPath());
         // URI "//foo" would be interpreted as network reference and thus change the original path to the host
-        Assert::assertSame('/foo', (string) $uri);
+        $this->assertSame('/foo', (string) $uri);
     }
 
-    public function test_authority_with_user_info_but_without_host()
+    public function test_authority_with_user_info_but_without_host(): void
     {
         $uri = $this->uri()->withUserInfo('user', 'pass');
-        Assert::assertSame('user:pass', $uri->getUserInfo());
-        Assert::assertSame('', $uri->getAuthority());
+        $this->assertSame('user:pass', $uri->getUserInfo());
+        $this->assertSame('', $uri->getAuthority());
     }
 
-    public function test_with_path_encodes_properly()
+    public function test_with_path_encodes_properly(): void
     {
         $uri = $this->uri()->withPath('/baz?#€/b%61r');
         // Query and fragment delimiters and multibyte chars are encoded.
-        Assert::assertSame('/baz%3F%23%E2%82%AC/b%61r', $uri->getPath());
-        Assert::assertSame('/baz%3F%23%E2%82%AC/b%61r', (string)$uri);
+        $this->assertSame('/baz%3F%23%E2%82%AC/b%61r', $uri->getPath());
+        $this->assertSame('/baz%3F%23%E2%82%AC/b%61r', (string)$uri);
     }
 
-    public function test_with_query_encodes_properly()
+    public function test_with_query_encodes_properly(): void
     {
         $uri = $this->uri()->withQuery('?=#&€=/&b%61r');
-        // A query starting with a "?" is valid and must not be magically removed. Otherwise it would be impossible to
-        // construct such an URI. Also the "?" and "/" does not need to be encoded in the query.
-        Assert::assertSame('?=%23&%E2%82%AC=/&b%61r', $uri->getQuery());
-        Assert::assertSame('??=%23&%E2%82%AC=/&b%61r', (string) $uri);
+        // A query starting with a "?" is valid and must not be magically removed. Otherwise, it would be impossible to
+        // construct such a URI. Also the "?" and "/" does not need to be encoded in the query.
+        $this->assertSame('?=%23&%E2%82%AC=/&b%61r', $uri->getQuery());
+        $this->assertSame('??=%23&%E2%82%AC=/&b%61r', (string) $uri);
     }
 
     /**
      * @dataProvider invalid_uris
-     * @param mixed $uri
      */
-    public function test_invalid_uris_are_rejected($uri)
+    public function test_invalid_uris_are_rejected(mixed $uri): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -302,9 +317,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_schemes
-     * @param mixed $scheme
      */
-    public function test_with_scheme_rejects_invalid_values($scheme)
+    public function test_with_scheme_rejects_invalid_values(mixed $scheme): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -314,10 +328,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_user_infos
-     * @param mixed $user
-     * @param mixed $password
      */
-    public function test_with_user_info_rejects_invalid_values($user, $password)
+    public function test_with_user_info_rejects_invalid_values(mixed $user, mixed $password): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -327,9 +339,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_hosts
-     * @param mixed $host
      */
-    public function test_with_host_rejects_invalid_values($host)
+    public function test_with_host_rejects_invalid_values(mixed $host): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -339,9 +350,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_ports
-     * @param mixed $port
      */
-    public function test_with_port_rejects_invalid_values($port)
+    public function test_with_port_rejects_invalid_values(mixed $port): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -351,9 +361,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_paths
-     * @param mixed $path
      */
-    public function test_with_path_rejects_invalid_values($path)
+    public function test_with_path_rejects_invalid_values(mixed $path): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -363,9 +372,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_queries
-     * @param mixed $query
      */
-    public function test_with_query_rejects_invalid_values($query)
+    public function test_with_query_rejects_invalid_values(mixed $query): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -375,9 +383,8 @@ trait UriTestTrait
 
     /**
      * @dataProvider invalid_uri_fragments
-     * @param mixed $fragment
      */
-    public function test_with_fragment_rejects_invalid_values($fragment)
+    public function test_with_fragment_rejects_invalid_values(mixed $fragment): void
     {
         $this->expectException(InvalidArgumentException::class);
 
