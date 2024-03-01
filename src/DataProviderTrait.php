@@ -14,7 +14,7 @@ use const UPLOAD_ERR_PARTIAL;
 
 trait DataProviderTrait
 {
-    public function invalid_protocol_versions(): array
+    public static function invalid_protocol_versions(): array
     {
         return [
             ['a'],
@@ -32,7 +32,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_protocol_versions(): array
+    public static function valid_protocol_versions(): array
     {
         return [
             ['0.9'],
@@ -44,7 +44,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function host_header_variations(): array
+    public static function host_header_variations(): array
     {
         return [
             'lowercase'         => ['host'],
@@ -66,7 +66,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_header_names(): array
+    public static function valid_header_names(): array
     {
         return [
             ['Access-Control-Allow-Credentials'],
@@ -131,7 +131,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_header_names(): array
+    public static function invalid_header_names(): array
     {
         return [
             [233],
@@ -150,7 +150,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_header_values(): array
+    public static function valid_header_values(): array
     {
         return [
             ['text/plain'],
@@ -161,7 +161,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_header_values(): array
+    public static function invalid_header_values(): array
     {
         return [
             ["package http\r\nH: 0 0\r\n\r\n"],
@@ -174,7 +174,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_request_targets(): array
+    public static function valid_request_targets(): array
     {
         return [
             'asterisk-form'         => ['*'],
@@ -186,7 +186,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_request_targets(): array
+    public static function invalid_request_targets(): array
     {
         return [
             'with-space'   => ['foo bar baz'],
@@ -198,7 +198,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function uris_with_request_targets(): array
+    public static function uris_with_request_targets(): array
     {
         return [
             ['http://foo.com/baz?bar=bam', '/baz?bar=bam'],
@@ -207,7 +207,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_request_methods(): array
+    public static function valid_request_methods(): array
     {
         return [
             'TRACE'          => ['TRACE'],
@@ -221,7 +221,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_request_methods(): array
+    public static function invalid_request_methods(): array
     {
         return [
             'number'                     => [123],
@@ -232,7 +232,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_uris(): array
+    public static function valid_uris(): array
     {
         return [
             ['urn:path-rootless'],
@@ -254,7 +254,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uris(): array
+    public static function invalid_uris(): array
     {
         return [
             ['http://'],
@@ -272,7 +272,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_uri_schemes(): array
+    public static function valid_uri_schemes(): array
     {
         return [
             ['aaa'],
@@ -568,7 +568,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_schemes(): array
+    public static function invalid_uri_schemes(): array
     {
         return [
             [0],
@@ -582,7 +582,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_user_infos(): array
+    public static function invalid_uri_user_infos(): array
     {
         return [
             [0, null],
@@ -594,7 +594,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_hosts(): array
+    public static function invalid_uri_hosts(): array
     {
         return [
             [0],
@@ -607,7 +607,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_ports(): array
+    public static function invalid_uri_ports(): array
     {
         return [
             [0],
@@ -625,7 +625,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_paths(): array
+    public static function invalid_uri_paths(): array
     {
         return [
             [null],
@@ -635,7 +635,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_queries(): array
+    public static function invalid_uri_queries(): array
     {
         return [
             [null],
@@ -644,7 +644,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uri_fragments(): array
+    public static function invalid_uri_fragments(): array
     {
         return [
             [[]],
@@ -658,7 +658,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function uri_components(): array
+    public static function uri_components(): array
     {
         $unreserved = 'a-zA-Z0-9.-_~!$&\'()*+,;=:@';
         return [
@@ -679,7 +679,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_query_params(): array
+    public static function valid_query_params(): array
     {
         return [
             ['0='],
@@ -691,7 +691,7 @@ trait DataProviderTrait
     }
 
 
-    public function valid_cookie_params(): array
+    public static function valid_cookie_params(): array
     {
         return [
             [[]],
@@ -700,14 +700,14 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_uploaded_files(): array
+    public static function valid_uploaded_files(): array
     {
         return [
             [[]],
         ];
     }
 
-    public function valid_parsed_bodies(): array
+    public static function valid_parsed_bodies(): array
     {
         return [
             [null],
@@ -716,7 +716,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_attribute_names_and_values(): array
+    public static function valid_attribute_names_and_values(): array
     {
         return [
             ['name', null],
@@ -730,7 +730,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_query_params(): array
+    public static function invalid_query_params(): array
     {
         return [
             [['a' => null]],
@@ -743,7 +743,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_cookie_params(): array
+    public static function invalid_cookie_params(): array
     {
         return [
             [['a' => null]],
@@ -757,7 +757,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_uploaded_files(): array
+    public static function invalid_uploaded_files(): array
     {
         return [
             [[null]],
@@ -771,7 +771,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_parsed_bodies(): array
+    public static function invalid_parsed_bodies(): array
     {
         return [
             [1],
@@ -781,7 +781,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_attribute_names_and_values(): array
+    public static function invalid_attribute_names_and_values(): array
     {
         return [
             [null, 1],
@@ -793,7 +793,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_resources(): array
+    public static function invalid_resources(): array
     {
         $name = tempnam(sys_get_temp_dir(), 'psr-7');
         return [
@@ -808,7 +808,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function all_modes(): array
+    public static function all_modes(): array
     {
         return [
             ['a',   false,  true],
@@ -840,25 +840,25 @@ trait DataProviderTrait
         ];
     }
 
-    public function non_readable_modes(): Generator
+    public static function non_readable_modes(): Generator
     {
-        foreach ($this->all_modes() as list($mode, $readable, $writable)) {
+        foreach (self::all_modes() as list($mode, $readable, $writable)) {
             if (!$readable) {
                 yield [$mode];
             }
         }
     }
 
-    public function non_writable_modes(): Generator
+    public static function non_writable_modes(): Generator
     {
-        foreach ($this->all_modes() as list($mode, $readable, $writable)) {
+        foreach (self::all_modes() as list($mode, $readable, $writable)) {
             if (!$writable) {
                 yield [$mode];
             }
         }
     }
 
-    public function invalid_status_codes(): array
+    public static function invalid_status_codes(): array
     {
         return [
             'true'     => [true],
@@ -873,7 +873,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_reason_phrases(): array
+    public static function invalid_reason_phrases(): array
     {
         return [
             'true'    => [true],
@@ -887,7 +887,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function headers_with_injection_vectors(): array
+    public static function headers_with_injection_vectors(): array
     {
         return [
             'name-with-cr'           => ["X-Foo\r-Bar", 'value'],
@@ -905,7 +905,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_streams(): array
+    public static function invalid_streams(): array
     {
         return [
             'null'   => [null],
@@ -919,7 +919,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_target_paths(): array
+    public static function invalid_target_paths(): array
     {
         return [
             'null'   => [null],
@@ -934,14 +934,14 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_file_sizes(): array
+    public static function invalid_file_sizes(): array
     {
         return [
             'negative' => [-1]
         ];
     }
 
-    public function invalid_file_names(): array
+    public static function invalid_file_names(): array
     {
         return [
             'directory-separator' => ['this/is/not/valid'],
@@ -949,7 +949,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function valid_media_types(): array
+    public static function valid_media_types(): array
     {
         return [
             ['audio/aac'],
@@ -982,7 +982,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_media_types(): array
+    public static function invalid_media_types(): array
     {
         return [
             ['test\\test'],
@@ -990,7 +990,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function invalid_file_upload_error_statuses(): array
+    public static function invalid_file_upload_error_statuses(): array
     {
         return [
             [-1],
@@ -1001,7 +1001,7 @@ trait DataProviderTrait
         ];
     }
 
-    public function file_upload_error_codes(): array
+    public static function file_upload_error_codes(): array
     {
         return [
             [UPLOAD_ERR_INI_SIZE],
