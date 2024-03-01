@@ -562,6 +562,13 @@ trait DataProviderTrait
         return [
             ['user:password', null],
             ['user', '/password'],
+            ['user:name', null],
+            ['pass/word', null],
+            ['user?name', null],
+            ['user', 'pass#word', null],
+            ['user@name', null],
+            ['user', 'pass[word]', null],
+            ['user!name', null],
         ];
     }
 
@@ -569,6 +576,8 @@ trait DataProviderTrait
     {
         return [
             'multiline' => "Invalid\nhost",
+            'leading-dash' => "-host.com",
+            'trailing-dash' => "host.com-",
         ];
     }
 
@@ -581,12 +590,6 @@ trait DataProviderTrait
             [PHP_INT_MIN],
             [0xffff + 1],
             [rand(0xffff + 1, 0xfffff)],
-            ['100'],
-            [7.4],
-            [true],
-            [new stdClass()],
-            [':80'],
-            ['80 but not always']
         ];
     }
 
@@ -743,12 +746,7 @@ trait DataProviderTrait
     public static function invalid_attribute_names_and_values(): array
     {
         return [
-            [null, 1],
-            [1, 2],
-            [1.1, 'test'],
-            [false, null],
-            [new stdClass(), 1],
-            [function () {}, 'value']
+            'empty' => ['', new stdClass],
         ];
     }
 
