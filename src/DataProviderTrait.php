@@ -560,12 +560,8 @@ trait DataProviderTrait
     public static function invalid_uri_user_infos(): array
     {
         return [
-            [0, null],
-            [null, null],
-            [true, null],
-            [new stdClass(), null],
-            ['user', true],
-            ['user', new stdClass()]
+            ['user:password', null],
+            ['user', '/password'],
         ];
     }
 
@@ -616,14 +612,8 @@ trait DataProviderTrait
     public static function invalid_uri_fragments(): array
     {
         return [
-            [[]],
-            [['/path']],
-            [null],
-            [true],
-            [new stdClass()],
-            [[new stdClass()]],
-            [function () {}],
-            [[function () {}]]
+            ['####'],
+            ["\n\n"],
         ];
     }
 
