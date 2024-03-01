@@ -2,7 +2,6 @@
 
 namespace Hamlet\Http\Message;
 
-use function GuzzleHttp\Psr7\stream_for;
 use Hamlet\Http\Message\Spec\Traits\DataProviderTrait;
 use Hamlet\Http\Message\Spec\Traits\MessageTestTrait;
 use Hamlet\Http\Message\Spec\Traits\ResponseTestTrait;
@@ -10,9 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Slim\Http\Response;
+use Laminas\Diactoros\Response;
 
-class SlimResponseTest extends TestCase
+class LaminasDiactorosResponseTest extends TestCase
 {
     use DataProviderTrait;
     use MessageTestTrait;
@@ -30,6 +29,7 @@ class SlimResponseTest extends TestCase
 
     protected function stream(): StreamInterface
     {
-        return stream_for();
+        $factory = new ZendStreamFactory();
+        return $factory->createStream();
     }
 }

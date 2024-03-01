@@ -6,9 +6,9 @@ use Hamlet\Http\Message\Spec\Traits\DataProviderTrait;
 use Hamlet\Http\Message\Spec\Traits\UriTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
-use Zend\Diactoros\Uri;
+use Laminas\Diactoros\Uri;
 
-class ZendDiactorosUriTest extends TestCase
+class LaminasDiactorosUriTest extends TestCase
 {
     use DataProviderTrait;
     use UriTestTrait;

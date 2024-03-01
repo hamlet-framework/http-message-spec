@@ -15,11 +15,8 @@ $generators = [
     'ring-central' => function (): ServerRequestInterface {
         return new \RingCentral\Psr7\ServerRequest('GET', '');
     },
-    'wind-walker' => function (): ServerRequestInterface {
-        return new Windwalker\Http\Request\ServerRequest();
-    },
-    'zend-diactoros' => function (): ServerRequestInterface {
-        return new \Zend\Diactoros\ServerRequest();
+    'lamina-diactoros' => function (): ServerRequestInterface {
+        return new \Laminas\Diactoros\ServerRequest();
     },
     'hamlet-framework' => function (): ServerRequestInterface {
         return \Hamlet\Http\Message\ServerRequest::empty();

@@ -7,7 +7,7 @@ use Hamlet\Http\Message\Spec\Traits\StreamTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 
-class HamletStreamTest extends TestCase
+class HamletStreamTest // extends TestCase
 {
     use DataProviderTrait;
     use StreamTestTrait;

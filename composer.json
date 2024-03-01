@@ -14,18 +14,16 @@
     "sort-packages": true
   },
   "require": {
-    "php": ">=8.1",
+    "php": "^8.3",
     "psr/http-message": "@stable"
   },
   "require-dev": {
     "hamlet-framework/http-message": "@stable",
     "phpunit/phpunit": "@stable",
     "guzzlehttp/psr7": "@stable",
-    "zendframework/zend-diactoros": "@stable",
-    "slim/slim": "@stable",
+    "laminas/laminas-diactoros": "@stable",
     "ringcentral/psr7": "@stable",
     "nyholm/psr7": "@stable",
-    "windwalker/http": "@stable",
     "phpbenchmark/phpbenchmark": "@stable",
     "httpsoft/http-message": "@stable"
   },

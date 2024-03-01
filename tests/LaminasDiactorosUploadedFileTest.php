@@ -7,10 +7,10 @@ use Hamlet\Http\Message\Spec\Traits\UploadedFileTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Zend\Diactoros\Stream;
-use Zend\Diactoros\UploadedFile;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\UploadedFile;
 
-class ZendDiactorosUploadedFileTest extends TestCase
+class LaminasDiactorosUploadedFileTest extends TestCase
 {
     use DataProviderTrait;
     use UploadedFileTestTrait;

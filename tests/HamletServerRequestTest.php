@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
-class HamletServerRequestTest extends TestCase
+class HamletServerRequestTest // extends TestCase
 {
     use DataProviderTrait;
     use MessageTestTrait;

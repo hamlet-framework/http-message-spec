@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
-class HamletUploadedFileTest extends TestCase
+class HamletUploadedFileTest // extends TestCase
 {
     use DataProviderTrait;
     use UploadedFileTestTrait;

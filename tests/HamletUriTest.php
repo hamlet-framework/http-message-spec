@@ -7,7 +7,7 @@ use Hamlet\Http\Message\Spec\Traits\UriTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UriInterface;
 
-class HamletUriTest extends TestCase
+class HamletUriTest // extends TestCase
 {
     use DataProviderTrait;
     use UriTestTrait;

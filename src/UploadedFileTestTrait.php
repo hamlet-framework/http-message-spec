@@ -3,7 +3,7 @@
 namespace Hamlet\Http\Message\Spec\Traits;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -15,35 +15,31 @@ trait UploadedFileTestTrait
 
     abstract protected function uploadedFile($streamOrResource, $size, $error, $clientFileName = null, $clientMediaType = null): UploadedFileInterface;
 
-    /**
-     * @dataProvider invalid_file_upload_error_statuses
-     * @param $status
-     */
-    public function test_setting_invalid_error_status_raises_exception($status)
+    #[DataProvider('invalid_file_upload_error_statuses')] public function test_setting_invalid_error_status_raises_exception(mixed $status): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
-    public function test_setting_stream_returns_original_stream()
+    public function test_setting_stream_returns_original_stream(): void
     {
         $resource = fopen('php://temp', 'r');
         $stream = $this->stream($resource);
 
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
-        Assert::assertSame($stream, $upload->getStream());
+        $this->assertSame($stream, $upload->getStream());
     }
 
-    public function test_setting_resource_returns_wrapped_stream()
+    public function test_setting_resource_returns_wrapped_stream(): void
     {
         $stream = fopen('php://temp', 'wb+');
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
 
         $uploadStream = $upload->getStream()->detach();
-        Assert::assertSame($stream, $uploadStream);
+        $this->assertSame($stream, $uploadStream);
     }
 
-    public function test_move_file_to_designated_path()
+    public function test_move_file_to_designated_path(): void
     {
         $resource = fopen('php://temp', 'wb+');
         $stream = $this->stream($resource);
@@ -53,16 +49,12 @@ trait UploadedFileTestTrait
 
         $to = tempnam(sys_get_temp_dir(), 'target');
         $upload->moveTo($to);
-        Assert::assertTrue(file_exists($to));
+        $this->assertTrue(file_exists($to));
         $contents = file_get_contents($to);
-        Assert::assertSame((string) $stream, $contents);
+        $this->assertSame((string) $stream, $contents);
     }
 
-    /**
-     * @dataProvider invalid_target_paths
-     * @param $path
-     */
-    public function test_moving_to_invalid_path_raises_exception($path)
+    #[DataProvider('invalid_target_paths')] public function test_moving_to_invalid_path_raises_exception(mixed $path): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -74,7 +66,7 @@ trait UploadedFileTestTrait
         $upload->moveTo($path);
     }
 
-    public function test_move_cannot_be_called_more_than_once()
+    public function test_move_cannot_be_called_more_than_once(): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -85,11 +77,11 @@ trait UploadedFileTestTrait
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
         $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
-        Assert::assertTrue(file_exists($to));
+        $this->assertTrue(file_exists($to));
         $upload->moveTo($to);
     }
 
-    public function test_cannot_retrieve_stream_after_move()
+    public function test_cannot_retrieve_stream_after_move(): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -99,11 +91,11 @@ trait UploadedFileTestTrait
         $upload = $this->uploadedFile($stream, 0, UPLOAD_ERR_OK);
         $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
-        Assert::assertTrue(file_exists($to));
+        $this->assertTrue(file_exists($to));
         $upload->getStream();
     }
 
-    public function test_move_to_creates_stream_only_path_provided()
+    public function test_move_to_creates_stream_only_path_provided(): void
     {
         $source = tempnam(sys_get_temp_dir(), 'source');
         $target = tempnam(sys_get_temp_dir(), 'target');
@@ -113,14 +105,10 @@ trait UploadedFileTestTrait
 
         $uploadedFile = $this->uploadedFile($source, 100, UPLOAD_ERR_OK, basename(__FILE__), 'text/plain');
         $uploadedFile->moveTo($target);
-        Assert::assertSame($content, file_get_contents($target));
+        $this->assertSame($content, file_get_contents($target));
     }
 
-    /**
-     * @dataProvider file_upload_error_codes
-     * @param int $code
-     */
-    public function test_non_ok_error_code_raises_exception_on_get_stream(int $code)
+    #[DataProvider('file_upload_error_codes')] public function test_non_ok_error_code_raises_exception_on_get_stream(int $code): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -130,11 +118,7 @@ trait UploadedFileTestTrait
         $uploadedFile->getStream();
     }
 
-    /**
-     * @dataProvider file_upload_error_codes
-     * @param int $code
-     */
-    public function test_non_ok_error_code_raises_exception_on_move_to(int $code)
+    #[DataProvider('file_upload_error_codes')] public function test_non_ok_error_code_raises_exception_on_move_to(int $code): void
     {
         $this->expectException(RuntimeException::class);
 
@@ -144,43 +128,27 @@ trait UploadedFileTestTrait
         $uploadedFile->moveTo('/tmp/foo');
     }
 
-    /**
-     * @dataProvider invalid_file_sizes
-     * @param $size
-     */
-    public function test_setting_invalid_file_size_raises_exception($size)
+    #[DataProvider('invalid_file_sizes')] public function test_setting_invalid_file_size_raises_exception(mixed $size): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->uploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
     }
 
-    /**
-     * @dataProvider invalid_file_names
-     * @param $fileName
-     */
-    public function test_invalid_client_file_names_raise_an_exception($fileName)
+    #[DataProvider('invalid_file_names')] public function test_invalid_client_file_names_raise_an_exception(mixed $fileName): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $fileName);
     }
 
-    /**
-     * @dataProvider valid_media_types
-     * @param $mediaType
-     */
-    public function test_valid_media_types_are_accepted($mediaType)
+    #[DataProvider('valid_media_types')] public function test_valid_media_types_are_accepted(mixed $mediaType): void
     {
         $file = $this->uploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
-        Assert::assertSame($mediaType, $file->getClientMediaType());
+        $this->assertSame($mediaType, $file->getClientMediaType());
     }
 
-    /**
-     * @dataProvider invalid_media_types
-     * @param $mediaType
-     */
-    public function test_invalid_client_media_type_raise_an_exception($mediaType)
+    #[DataProvider('invalid_media_types')] public function test_invalid_client_media_type_raise_an_exception(mixed $mediaType): void
     {
         $this->expectException(InvalidArgumentException::class);
 

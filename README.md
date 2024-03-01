@@ -55,20 +55,20 @@ class MyRequestTest extends TestCase
 
 You can now run your tests.
 
-## Benchmark results (PHP 8.1.4):
+## Benchmark results (PHP 8.3):
 
 Comprehensive test
 
     +----------------------+--------------------+-------------------+--------------+
     | Function description | Execution time (s) | Memory usage (mb) | Times faster |
     +----------------------+--------------------+-------------------+--------------+
-    | ring-central         | 1.6762             | 0.1750            | 1%           |
-    | nyholm               | 1.6955             | 0.1430            | 21%          |
-    | http-soft            | 2.0541             | 0.1190            | 14%          |
-    | guzzle               | 2.3434             | 0.2680            | 21%          |
-    | hamlet-framework     | 2.8571             | 0.2340            | 75%          |
-    | wind-walker          | 5.0028             | 0.3750            | 30%          |
-    | zend-diactoros       | 6.5114             | 0.1740            | 0            |
+    | ring-central         | 1.1089             | 0.1770            | 13%          |
+    | nyholm               | 1.2584             | 0.0870            | 20%          |
+    | http-soft            | 1.5183             | 0.1210            | 5%           |
+    | guzzle               | 1.6034             | 0.2050            | 18%          |
+    | hamlet-framework     | 1.8983             | 0.1700            | 51%          |
+    | zend-diactoros       | 2.8708             | 0.1730            | 8%           |
+    | wind-walker          | 3.1030             | 0.5210            | 0            |
     +----------------------+--------------------+-------------------+--------------+
 
 Fetching test
@@ -76,27 +76,25 @@ Fetching test
     +----------------------+--------------------+-------------------+--------------+
     | Function description | Execution time (s) | Memory usage (mb) | Times faster |
     +----------------------+--------------------+-------------------+--------------+
-    | hamlet-framework     | 0.6815             | 0.0000            | 22%          |
-    | ring-central         | 0.8361             | 0.0010            | 5%           |
-    | nyholm               | 0.8788             | 0.0010            | 10%          |
-    | guzzle               | 0.9670             | 0.0000            | 9%           |
-    | http-soft            | 1.0570             | 0.0000            | 50%          |
-    | zend-diactoros       | 1.5899             | 0.0000            | 38%          |
-    | wind-walker          | 2.1987             | 0.0000            | 0            |
+    | hamlet-framework     | 0.5370             | 0.0000            | 13%          |
+    | ring-central         | 0.6111             | 0.0010            | 12%          |
+    | guzzle               | 0.6852             | 0.0000            | 8%           |
+    | nyholm               | 0.7433             | 0.0000            | 18%          |
+    | http-soft            | 0.8771             | 0.0000            | 33%          |
+    | zend-diactoros       | 1.1698             | 0.0000            | 32%          |
+    | wind-walker          | 1.5468             | 0.0000            | 0            |
     +----------------------+--------------------+-------------------+--------------+
 
 
-## Total number of test failures (PHP 8.1.4):
+## Total number of test failures (PHP 8.3):
 
     +-----------------+-------+
     | Hamlet          |     0 |
-    | Nyholm          |   192 |
-    | WindWalker      |   244 |
-    | Guzzle          |   267 |
-    | HttpSoft        |   435 |
-    | RingCentral     |   435 |
-    | ZendDiactoros   |   542 |
-    | Slim            |  1387 |
+    | Nyholm          |   108 |
+    | RingCentral     |   109 |
+    | Guzzle          |   111 |
+    | HttpSoft        |   124 |
+    | LaminasDiactoros |   140 |
     +-----------------+-------+
 
 ### Todo

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
-class HamletRequestTest extends TestCase
+class HamletRequestTest // extends TestCase
 {
     use DataProviderTrait;
     use MessageTestTrait;

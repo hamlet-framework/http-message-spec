@@ -5,39 +5,47 @@ namespace Hamlet\Http\Message;
 use Hamlet\Http\Message\Spec\Traits\DataProviderTrait;
 use Hamlet\Http\Message\Spec\Traits\MessageTestTrait;
 use Hamlet\Http\Message\Spec\Traits\RequestTestTrait;
+use Hamlet\Http\Message\Spec\Traits\ServerRequestTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\Uri;
-use function GuzzleHttp\Psr7\stream_for;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\Uri;
 
-class SlimRequestTest extends TestCase
+class LaminasDiactorosServerRequestTest extends TestCase
 {
     use DataProviderTrait;
     use MessageTestTrait;
     use RequestTestTrait;
+    use ServerRequestTestTrait;
+
+    protected function serverRequest(): ServerRequestInterface
+    {
+        return new ServerRequest();
+    }
 
     protected function request(): RequestInterface
     {
-        return new Request('GET', Uri::createFromString(''), new Headers, [], [], stream_for());
+        return $this->serverRequest();
     }
 
     protected function message(): MessageInterface
     {
-        return $this->request();
+        return $this->serverRequest();
     }
 
     protected function stream(): StreamInterface
     {
-        return stream_for();
+        $factory = new StreamFactory();
+        return $factory->createStream();
     }
 
     protected function uri(string $value): UriInterface
     {
-        return Uri::createFromString($value);
+        return new Uri();
     }
 }

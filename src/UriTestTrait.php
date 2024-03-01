@@ -3,15 +3,13 @@
 namespace Hamlet\Http\Message\Spec\Traits;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\UriInterface;
 
 trait UriTestTrait
 {
     abstract protected function uri($value = ''): UriInterface;
 
-    /**
-     * @noinspection DuplicatedCode
-     */
     public function test_uri_parsing(): void
     {
         $uri = $this->uri('https://user:pass@example.com:8080/path/123?q=abc#test');
@@ -27,9 +25,6 @@ trait UriTestTrait
         $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $uri);
     }
 
-    /**
-     * @noinspection DuplicatedCode
-     */
     public function test_set_and_retrieve_uri_components(): void
     {
         $uri = $this->uri()
@@ -52,19 +47,13 @@ trait UriTestTrait
         $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string)$uri);
     }
 
-    /**
-     * @dataProvider valid_uris
-     */
-    public function test_valid_uris_forms_are_preserved(string $input): void
+    #[DataProvider('valid_uris')] public function test_valid_uris_forms_are_preserved(string $input): void
     {
         $uri = $this->uri($input);
         $this->assertSame($input, (string) $uri);
     }
 
-    /**
-     * @dataProvider valid_uri_schemes
-     */
-    public function test_valid_schemes_are_accepted(string $scheme): void
+    #[DataProvider('valid_uri_schemes')] public function test_valid_schemes_are_accepted(string $scheme): void
     {
         $uri = $this->uri()->withScheme($scheme);
         $this->assertSame($scheme, $uri->getScheme());
@@ -80,9 +69,6 @@ trait UriTestTrait
         }
     }
 
-    /**
-     * @noinspection DuplicatedCode
-     */
     public function test_recognize_falsey_uri_parts(): void
     {
         $uri = $this->uri('a://0:0@0/0?0#0');
@@ -96,9 +82,6 @@ trait UriTestTrait
         $this->assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
-    /**
-     * @noinspection DuplicatedCode
-     */
     public function test_accepts_falsey_uri_parts(): void
     {
         $uri = $this->uri()
@@ -118,9 +101,6 @@ trait UriTestTrait
         $this->assertSame('a://0:0@0/0?0#0', (string)$uri);
     }
 
-    /**
-     * @noinspection HttpUrlsUsage
-     */
     public function test_scheme_is_normalized_to_lowercase(): void
     {
         $uri = $this->uri('HTTP://example.com');
@@ -143,9 +123,6 @@ trait UriTestTrait
         $this->assertSame('//example.com', (string) $uri);
     }
 
-    /**
-     * @noinspection HttpUrlsUsage
-     */
     public function test_port_is_null_for_standard_scheme_ports(): void
     {
         // HTTPS standard port
@@ -174,9 +151,6 @@ trait UriTestTrait
         $this->assertSame('example.com:80', $uri->getAuthority());
     }
 
-    /**
-     * @noinspection HttpUrlsUsage
-     */
     public function test_standard_port_resets_to_null_after_scheme_changes(): void
     {
         $uri = $this->uri('http://example.com:443');
@@ -195,9 +169,6 @@ trait UriTestTrait
         $this->assertEquals(443, $uri->getPort());
     }
 
-    /**
-     * @noinspection HttpUrlsUsage
-     */
     public function test_port_can_be_removed(): void
     {
         $uri = $this->uri('http://example.com:8080')->withPort(null);
@@ -239,10 +210,7 @@ trait UriTestTrait
         $this->assertSame('foo', (string) $uri);
     }
 
-    /**
-     * @dataProvider uri_components
-     */
-    public function test_uri_components_encoding(string $input, string $path, string $query, string $fragment, string $output): void
+    #[DataProvider('uri_components')] public function test_uri_components_encoding(string $input, string $path, string $query, string $fragment, string $output): void
     {
         $uri = $this->uri($input);
 
@@ -305,20 +273,14 @@ trait UriTestTrait
         $this->assertSame('??=%23&%E2%82%AC=/&b%61r', (string) $uri);
     }
 
-    /**
-     * @dataProvider invalid_uris
-     */
-    public function test_invalid_uris_are_rejected(mixed $uri): void
+    #[DataProvider('invalid_uris')] public function test_invalid_uris_are_rejected(mixed $uri): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->uri($uri);
     }
 
-    /**
-     * @dataProvider invalid_uri_schemes
-     */
-    public function test_with_scheme_rejects_invalid_values(mixed $scheme): void
+    #[DataProvider('invalid_uri_schemes')] public function test_with_scheme_rejects_invalid_values(mixed $scheme): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -326,10 +288,7 @@ trait UriTestTrait
         $uri->getScheme();
     }
 
-    /**
-     * @dataProvider invalid_uri_user_infos
-     */
-    public function test_with_user_info_rejects_invalid_values(mixed $user, mixed $password): void
+    #[DataProvider('invalid_uri_user_infos')] public function test_with_user_info_rejects_invalid_values(mixed $user, mixed $password): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -337,10 +296,7 @@ trait UriTestTrait
         $uri->getUserInfo();
     }
 
-    /**
-     * @dataProvider invalid_uri_hosts
-     */
-    public function test_with_host_rejects_invalid_values(mixed $host): void
+    #[DataProvider('invalid_uri_hosts')] public function test_with_host_rejects_invalid_values(mixed $host): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -348,10 +304,7 @@ trait UriTestTrait
         $uri->getHost();
     }
 
-    /**
-     * @dataProvider invalid_uri_ports
-     */
-    public function test_with_port_rejects_invalid_values(mixed $port): void
+    #[DataProvider('invalid_uri_ports')] public function test_with_port_rejects_invalid_values(mixed $port): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -359,10 +312,7 @@ trait UriTestTrait
         $uri->getPort();
     }
 
-    /**
-     * @dataProvider invalid_uri_paths
-     */
-    public function test_with_path_rejects_invalid_values(mixed $path): void
+    #[DataProvider('invalid_uri_paths')] public function test_with_path_rejects_invalid_values(mixed $path): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -370,10 +320,7 @@ trait UriTestTrait
         $uri->getPath();
     }
 
-    /**
-     * @dataProvider invalid_uri_queries
-     */
-    public function test_with_query_rejects_invalid_values(mixed $query): void
+    #[DataProvider('invalid_uri_queries')] public function test_with_query_rejects_invalid_values(mixed $query): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -381,10 +328,7 @@ trait UriTestTrait
         $uri->getQuery();
     }
 
-    /**
-     * @dataProvider invalid_uri_fragments
-     */
-    public function test_with_fragment_rejects_invalid_values(mixed $fragment): void
+    #[DataProvider('invalid_uri_fragments')] public function test_with_fragment_rejects_invalid_values(mixed $fragment): void
     {
         $this->expectException(InvalidArgumentException::class);
 

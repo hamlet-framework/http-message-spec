@@ -2,9 +2,8 @@
 
 namespace Hamlet\Http\Message\Spec\Traits;
 
-use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -12,55 +11,47 @@ trait ResponseTestTrait
 {
     abstract protected function response(): ResponseInterface;
 
-    public function test_default_properties()
+    public function test_default_properties(): void
     {
         $response = $this->response();
-        Assert::assertSame(200, $response->getStatusCode());
-        Assert::assertSame('1.1', $response->getProtocolVersion());
-        Assert::assertSame('OK', $response->getReasonPhrase());
-        Assert::assertSame([], $response->getHeaders());
-        Assert::assertInstanceOf(StreamInterface::class, $response->getBody());
-        Assert::assertSame('', (string) $response->getBody());
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('1.1', $response->getProtocolVersion());
+        $this->assertSame('OK', $response->getReasonPhrase());
+        $this->assertSame([], $response->getHeaders());
+        $this->assertInstanceOf(StreamInterface::class, $response->getBody());
+        $this->assertSame('', (string) $response->getBody());
     }
 
-    // @todo loop though values
-    public function test_reason_phrase_deduced_from_status_code()
+    public function test_reason_phrase_deduced_from_status_code(): void
     {
         $response = $this->response()->withStatus(201);
 
-        Assert::assertSame(201, $response->getStatusCode());
-        Assert::assertSame('Created', $response->getReasonPhrase());
+        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame('Created', $response->getReasonPhrase());
     }
 
-    public function test_with_status_code_and_reason()
+    public function test_with_status_code_and_reason(): void
     {
         $r = $this->response()->withStatus(201, 'Foo');
-        Assert::assertSame(201, $r->getStatusCode());
-        Assert::assertSame('Foo', $r->getReasonPhrase());
+        $this->assertSame(201, $r->getStatusCode());
+        $this->assertSame('Foo', $r->getReasonPhrase());
 
         $r = $this->response()->withStatus(201, '0');
-        Assert::assertSame(201, $r->getStatusCode());
-        Assert::assertSame('0', $r->getReasonPhrase(), 'Falsey reason works');
+        $this->assertSame(201, $r->getStatusCode());
+        $this->assertSame('0', $r->getReasonPhrase(), 'Falsey reason works');
     }
 
-    /**
-     * @throws Exception
-     */
-    public function test_can_set_custom_code_and_reason_phrase()
+    public function test_can_set_custom_code_and_reason_phrase(): void
     {
         $code = rand(100, 599);
         $reason = md5(random_bytes(32));
 
         $response = $this->response()->withStatus($code, $reason);
-        Assert::assertSame($code, $response->getStatusCode());
-        Assert::assertSame($reason, $response->getReasonPhrase());
+        $this->assertSame($code, $response->getStatusCode());
+        $this->assertSame($reason, $response->getReasonPhrase());
     }
 
-    /**
-     * @dataProvider invalid_reason_phrases
-     * @param $phrase
-     */
-    public function test_with_status_rejects_invalid_reason_phrases($phrase)
+    #[DataProvider('invalid_reason_phrases')] public function test_with_status_rejects_invalid_reason_phrases(mixed $phrase): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -69,22 +60,18 @@ trait ResponseTestTrait
         $response->getReasonPhrase();
     }
 
-    public function test_with_status_accepts_valid_values()
+    public function test_with_status_accepts_valid_values(): void
     {
         for ($i = 0; $i < 100; $i++) {
             $code = rand(100, 599);
             $response = $this->response()->withStatus($code);
             $result = $response->getStatusCode();
-            Assert::assertSame((int)$code, $result);
-            Assert::assertIsInt($result);
+            $this->assertSame((int)$code, $result);
+            $this->assertIsInt($result);
         }
     }
 
-    /**
-     * @dataProvider invalid_status_codes
-     * @param $code
-     */
-    public function test_with_status_rejects_invalid_codes($code)
+    #[DataProvider('invalid_status_codes')] public function test_with_status_rejects_invalid_codes(mixed $code): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -92,11 +79,11 @@ trait ResponseTestTrait
         $response->getStatusCode();
     }
 
-    public function test_reason_phrase_for_unknown_code_is_empty_string()
+    public function test_reason_phrase_for_unknown_code_is_empty_string(): void
     {
         $response = $this->response()->withStatus(555);
 
-        Assert::assertIsString($response->getReasonPhrase());
-        Assert::assertEmpty($response->getReasonPhrase());
+        $this->assertIsString($response->getReasonPhrase());
+        $this->assertEmpty($response->getReasonPhrase());
     }
 }

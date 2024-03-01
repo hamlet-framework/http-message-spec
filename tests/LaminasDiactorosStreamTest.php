@@ -6,9 +6,9 @@ use Hamlet\Http\Message\Spec\Traits\DataProviderTrait;
 use Hamlet\Http\Message\Spec\Traits\StreamTestTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
-use Windwalker\Http\Stream\Stream;
+use Laminas\Diactoros\Stream;
 
-class WindWalkerStreamTest extends TestCase
+class LaminasDiactorosStreamTest extends TestCase
 {
     use DataProviderTrait;
     use StreamTestTrait;
