@@ -575,9 +575,9 @@ trait DataProviderTrait
     public static function invalid_uri_hosts(): array
     {
         return [
-            'multiline' => "Invalid\nhost",
-            'leading-dash' => "-host.com",
-            'trailing-dash' => "host.com-",
+            'multiline' => ["Invalid\nhost"],
+            'leading-dash' => ["-host.com"],
+            'trailing-dash' => ["host.com-"],
         ];
     }
 
