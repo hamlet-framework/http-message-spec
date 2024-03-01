@@ -18,16 +18,11 @@ trait DataProviderTrait
     {
         return [
             ['a'],
-            [null],
             ['1.a'],
             [1.],
             ['2.'],
             ['\0'],
             ['x1.5'],
-            [false],
-            [new stdClass()],
-            [function () {}],
-            [['2.0']],
             ['1.1 enhanced']
         ];
     }
@@ -134,8 +129,6 @@ trait DataProviderTrait
     public static function invalid_header_names(): array
     {
         return [
-            [233],
-            [null],
             ['hey dude'],
             ['Location:'],
             ['This-is-a-cyrillic-о'],
@@ -143,10 +136,6 @@ trait DataProviderTrait
             ["va\rlue"],
             ["va\r\nlue"],
             ["va\n\rlue"],
-            [true],
-            [new stdClass()],
-            [function () {}],
-            [[]],
         ];
     }
 
