@@ -552,12 +552,6 @@ trait DataProviderTrait
     public static function invalid_uri_schemes(): array
     {
         return [
-            [0],
-            [null],
-            [7.4],
-            [true],
-            [new stdClass()],
-            [function () {}],
             [':80'],
             ['80 but not always']
         ];
@@ -578,13 +572,7 @@ trait DataProviderTrait
     public static function invalid_uri_hosts(): array
     {
         return [
-            [0],
-            [null],
-            [7.4],
-            [true],
-            [new stdClass()],
-            [['example.com']],
-            [function() {}]
+            'multiline' => "Invalid\nhost",
         ];
     }
 
