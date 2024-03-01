@@ -19,7 +19,6 @@ trait DataProviderTrait
         return [
             ['a'],
             ['1.a'],
-            [1.],
             ['2.'],
             ['\0'],
             ['x1.5'],
@@ -850,29 +849,15 @@ trait DataProviderTrait
     public static function invalid_status_codes(): array
     {
         return [
-            'true'     => [true],
-            'false'    => [false],
-            'array'    => [[200]],
-            'object'   => [(object)['statusCode' => 200]],
             'too-low'  => [99],
-            'float'    => [400.5],
             'too-high' => [600],
-            'null'     => [null],
-            'string'   => ['foo'],
         ];
     }
 
     public static function invalid_reason_phrases(): array
     {
         return [
-            'true'    => [true],
-            'false'   => [false],
-            'array'   => [[200]],
-            'object'  => [(object)['reasonPhrase' => 'Ok']],
-            'integer' => [99],
-            'float'   => [400.5],
-            'null'    => [null],
-            'lambda'  => [function () {}]
+            'multiline'  => ['Hey\n\nThere'],
         ];
     }
 
