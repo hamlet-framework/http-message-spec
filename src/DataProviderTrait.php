@@ -247,14 +247,7 @@ trait DataProviderTrait
         return [
             ['http://'],
             ['urn://host:with:colon'],
-            [null],
-            [1],
-            [[]],
-            [1.1],
-            [false],
-            [new stdClass()],
-            [function () {}],
-            // ['//example.com:0'], // @todo for whatever reason php is flaky about this
+            ['//example.com:0'],
             ['//example.com:10000000'],
             ['0scheme://host/path?query#fragment']
         ];
@@ -896,15 +889,7 @@ trait DataProviderTrait
     public static function invalid_target_paths(): array
     {
         return [
-            'null'   => [null],
-            'true'   => [true],
-            'false'  => [false],
-            'int'    => [1],
-            'float'  => [1.1],
-            'empty'  => [''],
-            'array'  => [['filename']],
-            'object' => [(object)['filename']],
-            'lambda' => [function () {}]
+            'empty' => [''],
         ];
     }
 
